@@ -21,6 +21,9 @@ var authCodes = {};
 app.use(express.json());
 app.use(express.static("public"));
 
+if (!fs.existsSync("temp")) {
+  fs.mkdirSync("temp");
+}
 //return hashed valueb
 function sha256(input) {
   return createHash("sha256").update(input).digest("hex");
