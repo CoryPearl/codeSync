@@ -1,0 +1,20 @@
+For codespace:
+- add syntax highlighting
+- Problem with moving cursor around
+- able to run code unbufferd
+- all sizes for code spaces are weird 
+
+- sizes are weird for html/css/js buttons
+- js dosn't work for html/css/js
+
+
+voice chat
+codeSync sizing test on bigger monitor
+
+MySql: https://www.w3schools.com/nodejs/nodejs_mysql.asp
+python child_process unbuffered in js
+
+Sorces:
+- w3schools
+- google ai for simple syntax questions
+- stack overflow

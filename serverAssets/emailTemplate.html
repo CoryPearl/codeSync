@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeSync Auth</title>
+  </head>
+  <body
+    style="
+      background-color: rgb(36, 36, 36);
+      font-family: Arial, Helvetica, sans-serif;
+    "
+  >
+    <div id="main" style="text-align: center">
+      <img src="cid:logo" style="margin-top: 10px; padding: 0px" />
+      <h1 style="color: white; font-size: 80px; margin: 0px; padding: 0px">
+        Welcome to CodeSync {{firstName}}!
+      </h1>
+      <p
+        style="
+          color: rgb(206, 206, 206);
+          font-size: 60px;
+          margin: 0px;
+          padding: 0px;
+        "
+      >
+        This is your six didgit authentication code (lasts 1 min):
+      </p>
+      <p
+        id="code"
+        style="
+          font-size: 70px;
+          color: rgb(61, 61, 195);
+          cursor: pointer;
+          margin: 0px;
+          padding: 0px;
+        "
+      >
+        {{authCode}}
+      </p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeSync | INSERT ID</title>
+    <link rel="stylesheet" href="codeSync.css" />
+    <link rel="icon" href="assets/logo.png" />
+  </head>
+  <body>
+    <nav>
+      <div id="left">
+        <h1 id="codeDisplay">Code:</h1>
+        <h1 id="langDisplay">Language:</h1>
+      </div>
+      <div id="right">
+        <button id="leaveButton">Leave</button>
+        <h1 id="passwordDisplay">Password:</h1>
+      </div>
+    </nav>
+    <div id="header">
+      <div id="left">
+        <h2>Document:</h2>
+        <div id="buttons">
+          <button id="downloadLink">Download File</button>
+        </div>
+      </div>
+      <div id="right">
+        <h2>Output:</h2>
+        <div id="runDiv">
+          <label for="checkbox" style="display: none" id="autoRunLabel"
+            >Auto Run</label
+          >
+          <input
+            type="checkbox"
+            name="checkbox"
+            id="autoRun"
+            style="display: none"
+          />
+          <button id="run">Run</button>
+        </div>
+      </div>
+    </div>
+    <div id="main">
+      <div id="codeArea">
+        <div class="codeDiv" id="htmlDiv">
+          <div id="lineNumbers"></div>
+          <textarea id="codeSpace"></textarea>
+          <button id="htmlButton" class="expandButton" style="display: none">
+            Shrink HTML
+          </button>
+        </div>
+        <div class="codeDiv" id="cssDiv">
+          <div id="lineNumbersCSS" style="display: none"></div>
+          <textarea id="codeSpaceCSS" style="display: none"></textarea>
+          <button id="cssButton" class="expandButton" style="display: none">
+            Shrink CSS
+          </button>
+        </div>
+        <div class="codeDiv" id="jsDiv">
+          <div id="lineNumbersJS" style="display: none"></div>
+          <textarea id="codeSpaceJS" style="display: none"></textarea>
+          <button id="jsButton" class="expandButton" style="display: none">
+            Shrink JS
+          </button>
+        </div>
+      </div>
+      <iframe id="outputFrame" frameborder="0"></iframe>
+      <textarea id="output" readonly></textarea>
+    </div>
+    <div id="header2">
+      <div id="left">
+        <h2>Chat:</h2>
+      </div>
+      <div id="right">
+        <h2>Connected Users:</h2>
+      </div>
+    </div>
+    <div id="bottom">
+      <div id="chat">
+        <div id="chats"></div>
+        <div id="userInputs">
+          <input
+            type="text"
+            placeholder="Enter a message..."
+            id="chatInput"
+            autocomplete="off"
+          />
+          <button id="chatSend">Send</button>
+        </div>
+      </div>
+      <div id="users">
+        <p id="connectedUsers"></p>
+      </div>
+    </div>
+  </body>
+  <script src="codeSync.js" type="module"></script>
+  <!-- <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script> -->
+  <script src="socketio.js"></script>
+</html>

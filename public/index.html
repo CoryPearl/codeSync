@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="assets/logo.png" />
+    <title>CodeSync | Build Software Together</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <h1 id="welcome" style="font-family: monospace"></h1>
+    <nav id="nav">
+      <div id="left">
+        <a href="index.html"><img src="assets/logo.png" alt="" /></a>
+        <p>CodeSync</p>
+      </div>
+      <div id="right">
+        <div id="name-change" style="display: none">
+          <p>Change first name to?*</p>
+          <input
+            type="text"
+            placeholder="First Name"
+            id="first_name"
+            autocomplete="off"
+            required
+          />
+          <p>Change first last to?*</p>
+          <input
+            type="text"
+            placeholder="Last Name"
+            id="last_name"
+            autocomplete="off"
+            required
+          />
+          <p>Change email to?*</p>
+          <input
+            type="text"
+            placeholder="Email"
+            id="email"
+            autocomplete="off"
+            required
+          />
+          <p>Change password to?*</p>
+          <input
+            type="text"
+            placeholder="Password"
+            id="password"
+            autocomplete="off"
+            required
+          />
+          <button id="submit" onclick="submitNameChange()">Submit</button>
+          <button id="close" onclick="nameChangeMenu()">Close</button>
+          <h3>*Leave blank to keep same</h3>
+        </div>
+        <div id="buttons">
+          <a href="accountCreation.html" id="signUp"
+            ><button class="acc">Sign up</button></a
+          >
+          <img
+            src="assets/default-picture.png"
+            alt="default-picture.png"
+            id="profile"
+            style="display: none; cursor: pointer"
+            onclick="nameChangeMenu()"
+          />
+          <button
+            id="logOut"
+            class="acc"
+            onclick="logOut()"
+            style="display: none"
+          >
+            Log out
+          </button>
+          <a href="login.html" id="logIn"
+            ><button class="acc">Log in</button></a
+          >
+          <a href="join.html"><button id="start">Start Programing</button></a>
+        </div>
+      </div>
+    </nav>
+    <div id="intro">
+      <h1>Build Software Together</h1>
+      <p>
+        CodeSync is an collaborative programing software that allows you to work
+        on the same file at the same time in your browser!
+      </p>
+      <a href="accountCreation.html" style="text-decoration: none"
+        ><button id="notLoggedIn">Sign up</button></a
+      >
+      <a href="join.html" style="text-decoration: none"
+        ><button id="loggedIn">Start!</button></a
+      >
+    </div>
+    <img id="img" src="assets/homePic.png">
+    <footer>
+      <h2>Original code developed by Cory Pearl for his IA</h2>
+    </footer>
+  </body>
+  <script src="index.js"></script>
+</html>

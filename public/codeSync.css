@@ -1,0 +1,367 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  /* overflow: hidden; */
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background-color: rgb(70, 0, 45);
+}
+
+nav {
+  display: flex;
+  width: 100vw;
+  height: 5vh;
+  background-color: rgb(36, 36, 36);
+}
+
+nav #left {
+  display: flex;
+  padding-left: 5px;
+  gap: 10px;
+  align-items: center;
+  width: 50vw;
+  height: 5vh;
+  color: rgb(168, 168, 168);
+}
+
+nav #right {
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  width: 50vw;
+  height: 5vh;
+}
+
+nav #right button {
+  position: absolute;
+  cursor: pointer;
+  top: 2.5vh;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 150px;
+  height: 3.5vh;
+  border: none;
+  border-radius: 50px;
+  background-color: rgb(209, 56, 56);
+  color: white;
+}
+
+nav #right button:hover {
+  background-color: rgb(173, 50, 50);
+}
+
+nav #right h1 {
+  margin-right: 5px;
+  color: rgb(168, 168, 168);
+}
+
+#main {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  height: 67.5vh;
+}
+
+.expandButton {
+  width: 50px;
+  background-color: rgb(50, 50, 50);
+  color: white;
+  cursor: pointer;
+  border: none;
+  border-radius: 0px 10px 10px 0px;
+  border-top: 1px solid rgb(118, 118, 118);
+  border-bottom: 1px solid rgb(118, 118, 118);
+  border-right: 1px solid rgb(118, 118, 118);
+}
+
+.expandButton:hover {
+  background-color: rgb(25, 25, 25);
+}
+
+#codeArea {
+  width: 47vw;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 66vh;
+  gap: 1.3vh;
+}
+
+.codeDiv {
+  width: 100%;
+  width: calc(100% - 50px);
+  height: 22vh;
+  display: flex;
+}
+
+#lineNumbers {
+  overflow: scroll;
+  border-radius: 10px 0px 0px 10px;
+  background-color: rgb(50, 50, 50);
+  width: 2vw;
+  border-top: 1px solid rgb(118, 118, 118);
+  border-left: 1px solid rgb(118, 118, 118);
+  border-bottom: 1px solid rgb(118, 118, 118);
+  height: 100%;
+}
+
+#lineNumbersCSS {
+  overflow: scroll;
+  border-radius: 10px 0px 0px 10px;
+  background-color: rgb(50, 50, 50);
+  width: 2vw;
+  border-top: 1px solid rgb(118, 118, 118);
+  border-left: 1px solid rgb(118, 118, 118);
+  border-bottom: 1px solid rgb(118, 118, 118);
+  height: 100%;
+}
+
+#lineNumbersJS {
+  overflow: scroll;
+  border-radius: 10px 0px 0px 10px;
+  background-color: rgb(50, 50, 50);
+  width: 2vw;
+  border-top: 1px solid rgb(118, 118, 118);
+  border-left: 1px solid rgb(118, 118, 118);
+  border-bottom: 1px solid rgb(118, 118, 118);
+  height: 100%;
+}
+
+#lineNumbers::-webkit-scrollbar {
+  display: none;
+}
+
+#codeSpace {
+  line-height: 15px;
+  font-size: 15px;
+  word-break: break-all;
+  color: white;
+  border-radius: 0px 10px 10px 0px;
+  padding-left: 5px;
+  padding-top: 5px;
+  background-color: rgb(50, 50, 50);
+  width: 47vw;
+  resize: none;
+  height: 66vh;
+}
+
+#codeSpaceCSS {
+  padding-left: 5px;
+  padding-top: 5px;
+  line-height: 15px;
+  font-size: 15px;
+  word-break: break-all;
+  color: white;
+  border-radius: 0px 10px 10px 0px;
+  background-color: rgb(50, 50, 50);
+  width: 47vw;
+  resize: none;
+  height: 66vh;
+}
+
+#codeSpaceJS {
+  padding-top: 5px;
+  line-height: 15px;
+  padding-left: 5px;
+  font-size: 15px;
+  word-break: break-all;
+  color: white;
+  border-radius: 0px 10px 10px 0px;
+  background-color: rgb(50, 50, 50);
+  width: 47vw;
+  resize: none;
+  height: 66vh;
+}
+
+#outputFrame {
+  width: 0px;
+  border-radius: 10px;
+  padding: 5px;
+  background-color: white;
+  /* add border */
+}
+
+#runDiv {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#autoRun {
+  cursor: pointer;
+}
+
+#output {
+  border-radius: 10px;
+  color: white;
+  color: white;
+  background-color: rgb(50, 50, 50);
+  resize: none;
+  width: 49vw;
+  padding: 5px;
+}
+
+textarea:focus {
+  outline-width: 0;
+}
+
+#header {
+  display: flex;
+  height: 4vh;
+  width: 100vw;
+}
+
+#header #left {
+  display: flex;
+  padding-left: 0.5vw;
+  justify-content: space-between;
+  align-items: center;
+  color: rgb(222, 222, 222);
+  width: 50vw;
+}
+
+#header #left #downloadLink {
+  cursor: pointer;
+  border: none;
+  background-color: rgb(213, 174, 35);
+  text-decoration: none;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2.5px;
+  padding-bottom: 2.5px;
+  border-radius: 3px;
+  width: 125px;
+  color: white;
+}
+
+#header #left #downloadLink:hover {
+  background-color: rgb(193, 151, 0);
+}
+
+#header #right {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 0.5vw;
+  align-items: center;
+  color: rgb(222, 222, 222);
+  width: 50vw;
+}
+
+#header #right button {
+  margin-right: 0.5vw;
+  width: 100px;
+  height: 20px;
+  cursor: pointer;
+  border-radius: 7.5px;
+  border: none;
+  background-color: rgb(6, 186, 12);
+  color: white;
+}
+
+#header #right button:hover {
+  background-color: rgb(6, 123, 10);
+}
+
+#header2 {
+  display: flex;
+  height: 4vh;
+  width: 100vw;
+}
+
+#header2 #left {
+  display: flex;
+  padding-left: 0.5vw;
+  align-items: center;
+  color: rgb(222, 222, 222);
+  width: 50vw;
+}
+
+#header2 #right {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 0.5vw;
+  align-items: center;
+  color: rgb(222, 222, 222);
+  width: 50vw;
+}
+
+#bottom {
+  display: flex;
+  justify-content: center;
+  gap: 0.25vw;
+  width: 100vw;
+  height: 18.5vh;
+}
+
+#chat {
+  display: flex;
+  flex-direction: column;
+  width: 49.5vw;
+  height: 100%;
+  background-color: rgb(50, 50, 50);
+  border-radius: 10px;
+  border: 1px solid rgb(118, 118, 118);
+}
+
+#chat #chats {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: auto;
+  height: 80%;
+  width: 100%;
+  padding-left: 5px;
+}
+
+#chat #chats::-webkit-scrollbar {
+  display: none;
+}
+
+#chat #userInputs {
+  display: flex;
+  justify-content: space-around;
+  height: 18%;
+  width: 100%;
+}
+
+#chat input {
+  border-radius: 25px;
+  background-color: rgb(206, 206, 206);
+  width: 75%;
+  padding-left: 5px;
+  border: none;
+}
+
+#chat input:focus {
+  outline-width: 0;
+}
+
+#chat button {
+  border-radius: 5px;
+  width: 20%;
+  cursor: pointer;
+  border: none;
+  background-color: rgb(49, 111, 224);
+  color: white;
+}
+
+#chat button:hover {
+  background-color: rgb(39, 89, 181);
+}
+
+#users {
+  width: 49.5vw;
+  height: 100%;
+  background-color: rgb(50, 50, 50);
+  border-radius: 10px;
+  border: 1px solid rgb(118, 118, 118);
+}
+
+#connectedUsers {
+  color: rgb(222, 222, 222);
+  padding: 5px;
+  text-wrap: wrap;
+}

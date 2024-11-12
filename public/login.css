@@ -1,0 +1,166 @@
+html {
+  /* background-image: linear-gradient(
+    to right,
+    rgb(247, 119, 140),
+    rgb(238, 183, 82)
+  );
+  overflow: hidden; */
+  background-color: rgb(70, 0, 45);
+}
+
+#whole {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(36, 36, 36);
+  height: 90vh;
+  width: 90vw;
+  border-radius: 15px;
+}
+
+#left {
+  color: white;
+  height: 90vh;
+  width: 50vw;
+  border-radius: 15px;
+}
+
+#left img {
+  width: 100px;
+  height: 100px;
+  margin: 20px;
+}
+
+#right {
+  background-color: white;
+  height: 90vh;
+  width: 40vw;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+#name {
+  position: absolute;
+  top: 20px;
+  left: 140px;
+  font-size: 35px;
+  font-family: “Helvetica Neue”, Helvetica, Arial, sans-serif;
+}
+
+#welcome {
+  position: absolute;
+  top: 42.5%;
+  left: 27.5%;
+  transform: translate(-50%, -50%);
+  font-family: “Helvetica Neue”, Helvetica, Arial, sans-serif;
+  font-size: 50px;
+}
+
+#website_name {
+  font-weight: 10;
+  position: absolute;
+  bottom: 0px;
+  left: 25px;
+  font-family: “Helvetica Neue”, Helvetica, Arial, sans-serif;
+}
+
+#dirrections {
+  position: absolute;
+  bottom: 240px;
+  left: 25%;
+  font-size: 20px;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+#signin {
+  position: absolute;
+  top: 50px;
+  left: 60%;
+  font-size: 40px;
+  font-family: “Helvetica Neue”, Helvetica, Arial, sans-serif;
+}
+
+#email {
+  position: absolute;
+  top: 160px;
+  left: 60%;
+  border: none;
+  width: 300px;
+  height: 40px;
+  font-size: 20px;
+}
+
+#password {
+  position: absolute;
+  top: 225px;
+  left: 60%;
+  border: none;
+  width: 300px;
+  height: 40px;
+  font-size: 20px;
+}
+
+input:focus {
+  outline-width: 0;
+}
+
+input::placeholder {
+  font-size: 15px;
+}
+
+#block {
+  width: 31.5%;
+  height: 2.5px;
+  background-color: rgb(70, 0, 45);
+  position: absolute;
+  top: 210px;
+  left: 60%;
+}
+
+#block2 {
+  width: 31.5%;
+  height: 2.5px;
+  background-color: rgb(70, 0, 45);
+  position: absolute;
+  top: 275px;
+  left: 60%;
+}
+
+#continue {
+  position: absolute;
+  top: 325px;
+  left: 76%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #004aad;
+  border: none;
+  width: 300px;
+  height: 50px;
+  border-radius: 25px;
+}
+
+#continue:hover {
+  background-color: #275da3;
+}
+
+#create {
+  color: rgb(87, 87, 87);
+  text-decoration: none;
+  position: absolute;
+  top: 385px;
+  left: 76%;
+  transform: translateX(-50%);
+}
+
+#showPassword {
+  cursor: pointer;
+  position: absolute;
+  top: 238px;
+  left: 90%;
+  width: 25px;
+  height: 20px;
+}

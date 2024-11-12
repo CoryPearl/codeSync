@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeSync | Create</title>
+    <link rel="stylesheet" href="create.css" />
+    <link rel="icon" href="assets/logo.png" />
+  </head>
+  <body>
+    <h1 id="welcome" style="font-family: monospace"></h1>
+    <nav id="nav">
+      <div id="left">
+        <a href="index.html"><img src="assets/logo.png" alt="" /></a>
+        <p>CodeSync</p>
+      </div>
+      <div id="right">
+        <div id="name-change" style="display: none">
+          <p>Change first name to?*</p>
+          <input
+            type="text"
+            placeholder="First Name"
+            id="first_name"
+            autocomplete="off"
+            required
+          />
+          <p>Change first last to?*</p>
+          <input
+            type="text"
+            placeholder="Last Name"
+            id="last_name"
+            autocomplete="off"
+            required
+          />
+          <p>Change email to?*</p>
+          <input
+            type="text"
+            placeholder="Email"
+            id="email"
+            autocomplete="off"
+            required
+          />
+          <p>Change password to?*</p>
+          <input
+            type="text"
+            placeholder="Password"
+            id="password"
+            autocomplete="off"
+            required
+          />
+          <button id="submit" onclick="submitNameChange()">Submit</button>
+          <button id="close" onclick="nameChangeMenu()">Close</button>
+          <h3>*Leave blank to keep same</h3>
+        </div>
+        <div id="buttons">
+          <a href="accountCreation.html" id="signUp"
+            ><button class="acc">Sign up</button></a
+          >
+          <img
+            src="assets/default-picture.png"
+            alt="default-picture.png"
+            id="profile"
+            style="display: none; cursor: pointer"
+            onclick="nameChangeMenu()"
+          />
+          <button
+            id="logOut"
+            class="acc"
+            onclick="logOut()"
+            style="display: none"
+          >
+            Log out
+          </button>
+          <a href="login.html" id="logIn"
+            ><button class="acc">Log in</button></a
+          >
+          <a href="join.html"><button id="start">Start Programing</button></a>
+        </div>
+      </div>
+    </nav>
+    <div id="main">
+      <input
+        type="text"
+        id="roomPassword"
+        placeholder="Room Password"
+        autocomplete="off"
+      />
+      <select id="lang">
+        <option selected value="Please select a language">
+          Please select a language
+        </option>
+        <option value="Java">Java</option>
+        <option value="Python">Python</option>
+        <option value="html/css/js">html/css/js</option>
+        <option value="Java Script">Java Script</option>
+      </select>
+      <button id="join_button" onclick="create()">Create</button>
+      <p>Or</p>
+      <a href="join.html">Join a CodeSync</a>
+    </div>
+  </body>
+  <script src="create.js"></script>
+</html>

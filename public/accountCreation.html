@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeSync | Account Creation</title>
+    <link rel="stylesheet" href="accountCreation.css" />
+    <link rel="icon" href="assets/logo.png" />
+  </head>
+  <body>
+    <div id="whole">
+      <div id="left">
+        <a href="index.html"><img src="assets/logo.png" alt="logo" /></a>
+        <h2 id="name">CodeSync</h2>
+        <h4 id="welcome">Welcome to CodeSync</h4>
+        <p id="dirrections">Make an account to continue access</p>
+        <h4 id="website_name">www.CodeSync.com</h4>
+      </div>
+      <div id="right">
+        <h2 id="signin">Create Account</h2>
+        <input
+          type="text"
+          placeholder="Email Adress"
+          id="email"
+          autocomplete="off"
+          required
+        />
+        <div id="block"></div>
+        <input
+          type="text"
+          placeholder="First Name"
+          id="first_name"
+          utocomplete="off"
+          required
+        />
+        <div id="block2"></div>
+        <input
+          type="text"
+          placeholder="Last Name"
+          id="last_name"
+          utocomplete="off"
+          required
+        />
+        <div id="block3"></div>
+        <input
+          type="password"
+          placeholder="Password"
+          id="password"
+          utocomplete="off"
+          required
+        />
+        <div id="block4"></div>
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          id="confirm_password"
+          utocomplete="off"
+          required
+        />
+        <div id="block5"></div>
+        <button id="continue" onclick="goToSignIn()">Continue</button>
+        <a href="login.html" id="create">Sign in</a>
+        <img
+          src="assets/hide.png"
+          alt="hide"
+          onclick="togglePassword()"
+          id="showPassword"
+        />
+        <input
+          id="authCode"
+          type="text"
+          maxlength="6"
+          placeholder="Enter auth code"
+          autocomplete="off"
+        />
+        <button id="authButton" onclick="authenticate()">Go!</button>
+        <p id="timer">Expires in 60 sec</p>
+        <p id="warning">
+          If you did't recive an email please press continue again or double
+          check your email
+        </p>
+      </div>
+    </div>
+  </body>
+  <script src="accountCreation.js"></script>
+</html>
