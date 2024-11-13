@@ -3,6 +3,7 @@ var passwordInput2 = document.getElementById("confirm_password");
 var showPasswordCheckbox = document.getElementById("showPassword");
 var timeLeft = 60;
 
+//additiong function to toggle weather password is shown or hidden
 function togglePassword() {
   if (passwordInput.type === "password") {
     passwordInput.type = "text";
@@ -15,6 +16,7 @@ function togglePassword() {
   }
 }
 
+//send info to server to get auth code
 function sendInfo(firstName, lastName, email, password) {
   fetch("/send2fa", {
     method: "POST",
@@ -45,10 +47,12 @@ function sendInfo(firstName, lastName, email, password) {
     });
 }
 
+//change page function
 function changePage(page) {
   window.location.href = page + ".html";
 }
 
+//submit form
 function goToSignIn() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
@@ -70,6 +74,7 @@ function goToSignIn() {
   }
 }
 
+//authenticate code with server
 function authenticate() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
@@ -125,6 +130,7 @@ function authenticate() {
   }
 }
 
+//enter key submits form
 document.addEventListener("keydown", function (event) {
   if (event.key === "Enter") {
     goToSignIn();

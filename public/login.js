@@ -1,3 +1,4 @@
+//additiong function to toggle weather password is shown or hidden
 function togglePassword() {
   var passwordInput = document.getElementById("password");
   var showPasswordCheckbox = document.getElementById("showPassword");
@@ -11,6 +12,7 @@ function togglePassword() {
   }
 }
 
+//sending inputed info to server to verify
 function sendInfo(email, password) {
   fetch("/signIn", {
     method: "POST",
@@ -36,6 +38,7 @@ function sendInfo(email, password) {
     });
 }
 
+//just seperating it into two functions to add the ability of auto login for decelopment
 function signIn() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
@@ -49,10 +52,12 @@ function signIn() {
   // }
 }
 
+//switch to other page function
 function changePage(page) {
   window.location.href = page + ".html";
 }
 
+//enter key subimts
 document.addEventListener("keydown", function (event) {
   if (event.key === "Enter") {
     signIn();

@@ -11,6 +11,7 @@ For codespace:
 codeSync sizing test on bigger monitor
 
 MySql: https://www.w3schools.com/nodejs/nodejs_mysql.asp
+Highlight JS: https://highlightjs.org/
 python child_process unbuffered in js
 
 Sorces:

@@ -6,6 +6,7 @@ window.onload = () => {
     }
   });
 
+  //change page if logged in
   if (sessionStorage.getItem("loggedIn") == "True") {
     var password = sessionStorage.getItem("password");
     var email = sessionStorage.getItem("email");
@@ -30,6 +31,7 @@ window.onload = () => {
   }
 };
 
+//get center of inputed element
 function getCenterOfElement(element) {
   const rect = element.getBoundingClientRect();
 
@@ -39,6 +41,7 @@ function getCenterOfElement(element) {
   };
 }
 
+//display menu to chnage info
 function nameChangeMenu() {
   const center = getCenterOfElement(document.getElementById("profile"));
 
@@ -57,6 +60,7 @@ function nameChangeMenu() {
   }
 }
 
+//submit the form to change info
 function submitNameChange() {
   var firstName = document.getElementById("first_name").value;
   var lastName = document.getElementById("last_name").value;
@@ -125,6 +129,7 @@ function submitNameChange() {
   }
 }
 
+//submit info for room and get sent to join
 function join() {
   if (sessionStorage.getItem("loggedIn") == "True") {
     var firstName = sessionStorage.getItem("firstName");
@@ -178,6 +183,7 @@ function join() {
   }
 }
 
+//logout of website
 function logOut() {
   sessionStorage.clear();
   location.reload();

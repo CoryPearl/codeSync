@@ -220,9 +220,6 @@ textarea:focus {
   border-radius: 5px;
 }
 
-#chatControls p {
-}
-
 #header {
   display: flex;
   height: 4vh;

@@ -1,3 +1,4 @@
+//declaring a few variables
 const socket = io();
 var code = sessionStorage.getItem("code");
 var password = sessionStorage.getItem("roomPassword");
@@ -14,6 +15,7 @@ let peerConnection;
 const roomId = "voice-chat-room";
 let isMuted = false;
 
+//join the code sync when page load
 fetch("/joinCodeSync", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
@@ -38,6 +40,7 @@ fetch("/joinCodeSync", {
   });
 
 window.onload = () => {
+  //update codeing space, eventlistners, and output if the room is html/css/js
   checkHtml();
   updateSizes();
   addEventListeners();
@@ -65,6 +68,7 @@ window.onload = () => {
   addEventListeners();
 };
 
+//checking to see weather the person should be able to close the room or only leave it
 socket.on("ownerChecked", (data) => {
   if (data) {
     document.getElementById("leaveButton").innerHTML = "Close";
@@ -75,6 +79,7 @@ socket.on("ownerChecked", (data) => {
   }
 });
 
+//getting list of active users to display
 socket.on("updateUsers", (data) => {
   var toWright = "";
 
@@ -88,6 +93,7 @@ socket.on("updateUsers", (data) => {
   document.getElementById("connectedUsers").innerHTML = toWright;
 });
 
+//getting all text data from code spaces
 socket.on("roomData", (data) => {
   if (sessionStorage.getItem("language") == "html/css/js") {
     document.getElementById("codeSpace").value = data[0];
@@ -116,6 +122,7 @@ socket.on("ownerClosed", () => {
   }
 });
 
+//reciveing chat form server and displaying
 socket.on("reciveChat", (data) => {
   var name = data[0];
   var chat = data[1];
@@ -141,11 +148,12 @@ socket.on("reciveChat", (data) => {
   scrollToChatBottom();
 });
 
+//output data recived after running code
 socket.on("ranData", (data) => {
   document.getElementById("output").value = data;
 });
 
-//Writin by ChatGPT
+//Voice chat logic writin by ChatGPT
 //-------------------------------------------------------------
 const startChat = async () => {
   localStream = await navigator.mediaDevices.getUserMedia({
@@ -234,6 +242,7 @@ document.getElementById("stopChat").addEventListener("click", stopChat);
 document.getElementById("muteUnmute").addEventListener("click", toggleMute);
 //------------------------------------------------------------
 
+//checking if code room is in html/css/js and updating it accordingly
 function checkHtml() {
   if (sessionStorage.getItem("language") == "html/css/js") {
     document.getElementById("lineNumbers").style.height = "21.3vh";
@@ -383,6 +392,7 @@ function checkHtml() {
   }
 }
 
+//adding keybinds to textareas such as tab and when you tyep ( it auto closes with a )
 function addTextAreaKeys(name) {
   document.getElementById(name).addEventListener("keydown", (e) => {
     var textarea = document.getElementById(name);
@@ -447,6 +457,7 @@ function addTextAreaKeys(name) {
   });
 }
 
+//adding event listners to items
 function addEventListeners() {
   document
     .getElementById("leaveButton")
@@ -502,6 +513,7 @@ function addEventListeners() {
   addTextAreaKeys("codeSpace");
 }
 
+//downlading the working file or files into a txt file
 function donwloadText(name) {
   var textToWrite = document.getElementById(name).value;
   var textFileAsBlob = new Blob([textToWrite], { type: "text/plain" });
@@ -514,10 +526,12 @@ function donwloadText(name) {
   downloadLink.remove();
 }
 
+//getting all data about the room
 function getData() {
   socket.emit("getRoomData", { code });
 }
 
+//updating box sizes for html/css/js when someone minimizes or maximizes a size of text box
 function updateSizes() {
   if (sessionStorage.getItem("language") == "html/css/js") {
     if (htmlExpanded) {
@@ -541,6 +555,7 @@ function updateSizes() {
   }
 }
 
+//leaving logic and closing logic if owner
 function leave() {
   if (owner) {
     let confirm = prompt("Confirm close (y or n)?");
@@ -578,6 +593,7 @@ function leave() {
   }
 }
 
+//sending data from users textarea or areas
 function sendData() {
   var data;
   if (sessionStorage.getItem("language") == "html/css/js") {
@@ -609,6 +625,7 @@ function sendChat() {
   }
 }
 
+//updating the line numbers on side of text areas
 function updateLines(spaceName, lineName) {
   let lines = document.getElementById(spaceName).value.split("\n").length;
   document.getElementById(lineName).innerHTML = "";
@@ -630,6 +647,7 @@ function updateLines(spaceName, lineName) {
   }
 }
 
+//updating the scroll of line numbers to match scroll of teaxt area
 function updateScroll() {
   document.getElementById("lineNumbers").scrollTop =
     document.getElementById("codeSpace").scrollTop;
@@ -646,6 +664,7 @@ function scrollToChatBottom() {
     document.getElementById("chats").scrollHeight;
 }
 
+//sending code to server to run
 function run() {
   if (sessionStorage.getItem("language") == "html/css/js") {
     const html = document.getElementById("codeSpace").value;

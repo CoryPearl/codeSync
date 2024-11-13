@@ -1,4 +1,5 @@
 window.onload = () => {
+  //update page based if logged in
   if (sessionStorage.getItem("loggedIn") == "True") {
     var password = sessionStorage.getItem("password");
     var email = sessionStorage.getItem("email");
@@ -25,6 +26,7 @@ window.onload = () => {
   }
 };
 
+//returns center of inputed element
 function getCenterOfElement(element) {
   const rect = element.getBoundingClientRect();
 
@@ -34,6 +36,7 @@ function getCenterOfElement(element) {
   };
 }
 
+//display menu to change info
 function nameChangeMenu() {
   const center = getCenterOfElement(document.getElementById("profile"));
 
@@ -52,6 +55,7 @@ function nameChangeMenu() {
   }
 }
 
+//submits chage info form
 function submitNameChange() {
   var firstName = document.getElementById("first_name").value;
   var lastName = document.getElementById("last_name").value;
@@ -120,6 +124,7 @@ function submitNameChange() {
   }
 }
 
+//logout of page and reload
 function logOut() {
   sessionStorage.clear();
   location.reload();

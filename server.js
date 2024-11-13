@@ -1,3 +1,4 @@
+//declaring dependencies
 const express = require("express");
 const fs = require("fs");
 const { createHash } = require("crypto");
@@ -12,11 +13,13 @@ const port = 3000;
 // const ip = "10.34.7.111";
 const ip = "192.168.86.165";
 
+//key and cert for https
 const options = {
   key: fs.readFileSync("key.pem"),
   cert: fs.readFileSync("cert.pem"),
 };
 
+//app creation, https server creation, and io creation in the server
 const app = express();
 const server = https.createServer(options, app);
 // const server = http.createServer(app);
@@ -26,13 +29,16 @@ var rooms = {};
 var codes = [];
 var authCodes = {};
 
+//telling express what files to use
 app.use(express.json());
 app.use(express.static("public"));
 
+//creating temp folder to store running files
 if (!fs.existsSync("temp")) {
   fs.mkdirSync("temp");
 }
-//return hashed valueb
+
+//return hashed value
 function sha256(input) {
   return createHash("sha256").update(input).digest("hex");
 }

@@ -1,4 +1,5 @@
 window.onload = () => {
+  //making enter submit
   document.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -6,6 +7,7 @@ window.onload = () => {
     }
   });
 
+  //updating page if logged in
   if (sessionStorage.getItem("loggedIn") == "True") {
     var password = sessionStorage.getItem("password");
     var email = sessionStorage.getItem("email");
@@ -30,6 +32,7 @@ window.onload = () => {
   }
 };
 
+// retunrs center of givin element
 function getCenterOfElement(element) {
   const rect = element.getBoundingClientRect();
 
@@ -39,6 +42,7 @@ function getCenterOfElement(element) {
   };
 }
 
+//displays account info change menu
 function nameChangeMenu() {
   const center = getCenterOfElement(document.getElementById("profile"));
 
@@ -57,6 +61,7 @@ function nameChangeMenu() {
   }
 }
 
+//submits account info change
 function submitNameChange() {
   var firstName = document.getElementById("first_name").value;
   var lastName = document.getElementById("last_name").value;
@@ -125,11 +130,13 @@ function submitNameChange() {
   }
 }
 
+//logs out and reloads
 function logOut() {
   sessionStorage.clear();
   location.reload();
 }
 
+//sends info to the server to create a new room, then joins the room as the owner
 function create() {
   if (
     sessionStorage.getItem("loggedIn") == "True" &&
