@@ -11,7 +11,6 @@ var htmlExpanded = true;
 var cssExpanded = true;
 var jsExpanded = true;
 let localStream;
-let peerConnection;
 const roomId = "voice-chat-room";
 let isMuted = false;
 
@@ -674,6 +673,16 @@ function run() {
     document.getElementById("outputFrame").contentDocument.body.innerHTML =
       html + "<style>" + css + "</style>";
     document.getElementById("outputFrame").contentWindow.eval(js);
+  } else if (sessionStorage.getItem("language") == "Javascript") {
+    const js = document.getElementById("codeSpace").value;
+
+    try {
+      const result = eval(js);
+      document.getElementById("output").value =
+        result !== undefined ? result : "Code exicuted without output";
+    } catch (error) {
+      document.getElementById("output").value = `Error: ${error.message}`;
+    }
   } else {
     const language = sessionStorage.getItem("language");
     const userData = document.getElementById("codeSpace").value;

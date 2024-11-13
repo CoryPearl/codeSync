@@ -191,7 +191,7 @@ app.post("/createCodeSync", (req, res) => {
     new_room.data = `print("Hello World")`;
   } else if (new_room.language == "Java") {
     new_room.data = `class HelloWorld\n{\n\tpublic static void main(String []args)\n\t{\n\t\tSystem.out.println("Hello World!");\n\t}\n};`;
-  } else if (new_room.language == "Java Script") {
+  } else if (new_room.language == "Javascript") {
     new_room.data = `console.log("Hello World")`;
   } else if (new_room.language == "html/css/js") {
     new_room.data.html = `<!DOCTYPE html>\n<html lang="en">\n\t<head>\n\t\t<meta charset="UTF-8" />\n\t\t<meta name="viewport" content="width=device-width, initial-scale=1.0" />\n\t\t<title>Hello World</title>\n\t</head>\n\t<body>\n\t\t<h1>Hello World!</h1>\n\t</body>\n</html>`;
