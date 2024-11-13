@@ -7,7 +7,6 @@ For codespace:
 - sizes are weird for html/css/js buttons
 - js dosn't work for html/css/js
 
-
 codeSync sizing test on bigger monitor
 
 MySql: https://www.w3schools.com/nodejs/nodejs_mysql.asp
@@ -15,7 +14,9 @@ Highlight JS: https://highlightjs.org/
 python child_process unbuffered in js
 
 Sorces:
+- chat gpt
 - w3schools
 - google ai for simple syntax questions
 - stack overflow
 - socketio.js from (c) 2014-2023 Guillermo Rauch
+- highlight js

@@ -9,14 +9,16 @@ const nodemailer = require("nodemailer");
 const handlebars = require("handlebars");
 const { spawn } = require("child_process");
 
+const protocal = "https";
+// const protocal = "http";
 const port = 3000;
 // const ip = "10.34.7.111";
 const ip = "192.168.86.165";
 
 //key and cert for https
 const options = {
-  key: fs.readFileSync("key.pem"),
-  cert: fs.readFileSync("cert.pem"),
+  key: fs.readFileSync("keys/key.pem"),
+  cert: fs.readFileSync("keys/cert.pem"),
 };
 
 //app creation, https server creation, and io creation in the server
@@ -613,5 +615,5 @@ io.on("connection", (socket) => {
 });
 
 server.listen(port, ip, () => {
-  console.log(`Server is running on https://${ip}:${port}`);
+  console.log(`Server is running on ${protocal}://${ip}:${port}`);
 });
