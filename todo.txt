@@ -18,3 +18,4 @@ Sorces:
 - w3schools
 - google ai for simple syntax questions
 - stack overflow
+- socketio.js from (c) 2014-2023 Guillermo Rauch

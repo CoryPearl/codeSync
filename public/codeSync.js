@@ -9,6 +9,10 @@ var localCursorPos = 0;
 var htmlExpanded = true;
 var cssExpanded = true;
 var jsExpanded = true;
+let localStream;
+let peerConnection;
+const roomId = "voice-chat-room";
+let isMuted = false;
 
 fetch("/joinCodeSync", {
   method: "POST",
@@ -138,6 +142,95 @@ socket.on("reciveChat", (data) => {
 socket.on("ranData", (data) => {
   document.getElementById("output").value = data;
 });
+
+//Writin by ChatGPT
+//-------------------------------------------------------------
+const startChat = async () => {
+  localStream = await navigator.mediaDevices.getUserMedia({
+    audio: true,
+  });
+  socket.emit("join-room", roomId);
+
+  peerConnection = new RTCPeerConnection();
+  peerConnection.addStream(localStream);
+
+  peerConnection.onicecandidate = (event) => {
+    if (event.candidate) {
+      socket.emit("candidate", event.candidate, roomId);
+    }
+  };
+
+  peerConnection.onaddstream = (event) => {
+    const audioElement = document.createElement("audio");
+    audioElement.srcObject = event.stream;
+    audioElement.autoplay = true;
+    document.body.appendChild(audioElement);
+  };
+
+  socket.on("offer", async (offer) => {
+    await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
+    const answer = await peerConnection.createAnswer();
+    await peerConnection.setLocalDescription(answer);
+    socket.emit("answer", answer, roomId);
+  });
+
+  socket.on("answer", (answer) => {
+    peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
+  });
+
+  socket.on("candidate", (candidate) => {
+    peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+  });
+
+  const offer = await peerConnection.createOffer();
+  await peerConnection.setLocalDescription(offer);
+  socket.emit("offer", offer, roomId);
+
+  // Enable Stop and Mute buttons
+  document.getElementById("stopChat").disabled = false;
+  document.getElementById("muteUnmute").disabled = false;
+};
+
+const stopChat = () => {
+  // Close peer connection and stop audio tracks
+  if (peerConnection) {
+    peerConnection.close();
+    peerConnection = null;
+  }
+
+  if (localStream) {
+    localStream.getTracks().forEach((track) => track.stop());
+    localStream = null;
+  }
+
+  // Disable Stop and Mute buttons, enable Start Chat button
+  document.getElementById("startChat").disabled = false;
+  document.getElementById("stopChat").disabled = true;
+  document.getElementById("muteUnmute").disabled = true;
+
+  // Clear any remaining audio elements
+  document.querySelectorAll("audio").forEach((audio) => audio.remove());
+};
+
+const toggleMute = () => {
+  if (localStream) {
+    isMuted = !isMuted;
+    localStream.getAudioTracks()[0].enabled = !isMuted;
+
+    // Update button text based on mute state
+    document.getElementById("muteUnmute").textContent = isMuted
+      ? "Unmute"
+      : "Mute";
+  }
+};
+
+document.getElementById("startChat").addEventListener("click", () => {
+  startChat();
+  document.getElementById("startChat").disabled = true;
+});
+document.getElementById("stopChat").addEventListener("click", stopChat);
+document.getElementById("muteUnmute").addEventListener("click", toggleMute);
+//------------------------------------------------------------
 
 function checkHtml() {
   if (sessionStorage.getItem("language") == "html/css/js") {

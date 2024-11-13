@@ -12,8 +12,8 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 const port = 3000;
-const ip = "10.34.7.111";
-// const ip = "192.168.86.158";
+// const ip = "10.34.7.111";
+const ip = "";
 var rooms = {};
 var codes = [];
 var authCodes = {};
@@ -485,6 +485,25 @@ io.on("connection", (socket) => {
       }
     }
   });
+  //For voice chat, writin by ChatGPT
+  //---------------------------------------
+  socket.on("offer", (offer, roomId) => {
+    socket.to(roomId).emit("offer", offer);
+  });
+
+  socket.on("answer", (answer, roomId) => {
+    socket.to(roomId).emit("answer", answer);
+  });
+
+  socket.on("candidate", (candidate, roomId) => {
+    socket.to(roomId).emit("candidate", candidate);
+  });
+
+  socket.on("join-room", (roomId) => {
+    socket.join(roomId);
+    console.log(`User joined room: ${roomId}`);
+  });
+  //---------------------------------------
 
   //run code
   socket.on("run", ({ language, userData, firstName, lastName }) => {
