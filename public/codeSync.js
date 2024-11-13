@@ -61,6 +61,8 @@ window.onload = () => {
   )}`;
   const password = sessionStorage.getItem("password");
   socket.emit("checkOwner", { name, password, code });
+
+  addEventListeners();
 };
 
 socket.on("ownerChecked", (data) => {
@@ -272,6 +274,96 @@ function checkHtml() {
 
     addTextAreaKeys("codeSpaceCSS");
     addTextAreaKeys("codeSpaceJS");
+
+    document
+      .getElementById("codeSpaceCSS")
+      .addEventListener("input", function (e) {
+        sendData();
+        updateLines("codeSpaceCSS", "lineNumbersCSS");
+      });
+
+    document
+      .getElementById("codeSpaceJS")
+      .addEventListener("input", function (e) {
+        sendData();
+        updateLines("codeSpaceJS", "lineNumbersJS");
+      });
+
+    document
+      .getElementById("htmlButton")
+      .addEventListener("click", function (e) {
+        if (htmlExpanded) {
+          htmlExpanded = false;
+          document.getElementById("codeSpace").style.height = "1vh";
+          document.getElementById("codeSpace").style.padding = "0.625vh";
+          document.getElementById("htmlDiv").style.height = "1vh";
+          document.getElementById("lineNumbers").style.height = "2.3vh";
+          document.getElementById("htmlButton").innerHTML = "Expand";
+          document.getElementById("htmlButton").style.height = "2.5vh";
+          document.getElementById("htmlDiv").style.marginBottom = "10px";
+        } else {
+          htmlExpanded = true;
+          document.getElementById("codeSpace").style.padding = "0px";
+          document.getElementById("codeSpace").style.paddingLeft = "5px";
+          document.getElementById("codeSpace").style.height = "100%";
+          document.getElementById("lineNumbers").style.height = "100%";
+          document.getElementById("htmlDiv").style.height = "22vh";
+          document.getElementById("htmlButton").innerHTML = "Shrink HTML";
+          document.getElementById("htmlButton").style.height = "101.25%";
+          document.getElementById("htmlDiv").style.marginBottom = "0px";
+        }
+        updateSizes();
+      });
+
+    document
+      .getElementById("cssButton")
+      .addEventListener("click", function (e) {
+        if (cssExpanded) {
+          cssExpanded = false;
+          document.getElementById("codeSpaceCSS").style.padding = "0.625vh";
+          document.getElementById("codeSpaceCSS").style.height = "1vh";
+          document.getElementById("cssDiv").style.height = "1vh";
+          document.getElementById("lineNumbersCSS").style.height = "2.3vh";
+          document.getElementById("cssButton").innerHTML = "Expand";
+          document.getElementById("cssButton").style.height = "2.5vh";
+          document.getElementById("cssDiv").style.marginBottom = "10px";
+        } else {
+          cssExpanded = true;
+          document.getElementById("codeSpaceCSS").style.padding = "0px";
+          document.getElementById("codeSpaceCSS").style.paddingLeft = "5px";
+          document.getElementById("codeSpaceCSS").style.height = "100%";
+          document.getElementById("lineNumbersCSS").style.height = "100%";
+          document.getElementById("cssDiv").style.height = "22vh";
+          document.getElementById("cssButton").innerHTML = "Shrink CSS";
+          document.getElementById("cssButton").style.height = "101.25%";
+          document.getElementById("cssDiv").style.marginBottom = "0px";
+        }
+        updateSizes();
+      });
+
+    document.getElementById("jsButton").addEventListener("click", function (e) {
+      if (jsExpanded) {
+        jsExpanded = false;
+        document.getElementById("codeSpaceJS").style.padding = "0.625vh";
+        document.getElementById("codeSpaceJS").style.height = "1vh";
+        document.getElementById("jsDiv").style.height = "1vh";
+        document.getElementById("lineNumbersJS").style.height = "2.3vh";
+        document.getElementById("jsButton").innerHTML = "Expand";
+        document.getElementById("jsButton").style.height = "2.5vh";
+        document.getElementById("jsDiv").style.marginBottom = "10px";
+      } else {
+        jsExpanded = true;
+        document.getElementById("codeSpaceJS").style.padding = "0px";
+        document.getElementById("codeSpaceJS").style.paddingLeft = "5px";
+        document.getElementById("codeSpaceJS").style.height = "100%";
+        document.getElementById("lineNumbersJS").style.height = "100%";
+        document.getElementById("jsDiv").style.height = "22vh";
+        document.getElementById("jsButton").innerHTML = "Shrink JS";
+        document.getElementById("jsButton").style.height = "101.25%";
+        document.getElementById("jsDiv").style.marginBottom = "0px";
+      }
+      updateSizes();
+    });
   } else {
     updateLines("codeSpace", "lineNumbers");
     document.getElementById("codeSpace").style.padding = "5px";
@@ -286,6 +378,8 @@ function checkHtml() {
       .getElementById("htmlDiv")
       .removeChild(document.getElementById("htmlButton"));
     document.getElementById("htmlDiv").style.width = "100%";
+
+    document.getElementById("outputFrame").style.display = "none";
   }
 }
 
@@ -365,20 +459,6 @@ function addEventListeners() {
     updateLines("codeSpace", "lineNumbers");
   });
 
-  document
-    .getElementById("codeSpaceCSS")
-    .addEventListener("input", function (e) {
-      sendData();
-      updateLines("codeSpaceCSS", "lineNumbersCSS");
-    });
-
-  document
-    .getElementById("codeSpaceJS")
-    .addEventListener("input", function (e) {
-      sendData();
-      updateLines("codeSpaceJS", "lineNumbersJS");
-    });
-
   document.getElementById("codeSpace").addEventListener("focus", function (e) {
     focusStatus = "code";
   });
@@ -397,78 +477,6 @@ function addEventListeners() {
 
   document.getElementById("run").addEventListener("click", function (e) {
     run();
-  });
-
-  document.getElementById("htmlButton").addEventListener("click", function (e) {
-    if (htmlExpanded) {
-      htmlExpanded = false;
-      document.getElementById("codeSpace").style.height = "1vh";
-      document.getElementById("codeSpace").style.padding = "0.625vh";
-      document.getElementById("htmlDiv").style.height = "1vh";
-      document.getElementById("lineNumbers").style.height = "2.3vh";
-      document.getElementById("htmlButton").innerHTML = "Expand";
-      document.getElementById("htmlButton").style.height = "2.5vh";
-      document.getElementById("htmlDiv").style.marginBottom = "10px";
-    } else {
-      htmlExpanded = true;
-      document.getElementById("codeSpace").style.padding = "0px";
-      document.getElementById("codeSpace").style.paddingLeft = "5px";
-      document.getElementById("codeSpace").style.height = "100%";
-      document.getElementById("lineNumbers").style.height = "100%";
-      document.getElementById("htmlDiv").style.height = "22vh";
-      document.getElementById("htmlButton").innerHTML = "Shrink HTML";
-      document.getElementById("htmlButton").style.height = "101.25%";
-      document.getElementById("htmlDiv").style.marginBottom = "0px";
-    }
-    updateSizes();
-  });
-
-  document.getElementById("cssButton").addEventListener("click", function (e) {
-    if (cssExpanded) {
-      cssExpanded = false;
-      document.getElementById("codeSpaceCSS").style.padding = "0.625vh";
-      document.getElementById("codeSpaceCSS").style.height = "1vh";
-      document.getElementById("cssDiv").style.height = "1vh";
-      document.getElementById("lineNumbersCSS").style.height = "2.3vh";
-      document.getElementById("cssButton").innerHTML = "Expand";
-      document.getElementById("cssButton").style.height = "2.5vh";
-      document.getElementById("cssDiv").style.marginBottom = "10px";
-    } else {
-      cssExpanded = true;
-      document.getElementById("codeSpaceCSS").style.padding = "0px";
-      document.getElementById("codeSpaceCSS").style.paddingLeft = "5px";
-      document.getElementById("codeSpaceCSS").style.height = "100%";
-      document.getElementById("lineNumbersCSS").style.height = "100%";
-      document.getElementById("cssDiv").style.height = "22vh";
-      document.getElementById("cssButton").innerHTML = "Shrink CSS";
-      document.getElementById("cssButton").style.height = "101.25%";
-      document.getElementById("cssDiv").style.marginBottom = "0px";
-    }
-    updateSizes();
-  });
-
-  document.getElementById("jsButton").addEventListener("click", function (e) {
-    if (jsExpanded) {
-      jsExpanded = false;
-      document.getElementById("codeSpaceJS").style.padding = "0.625vh";
-      document.getElementById("codeSpaceJS").style.height = "1vh";
-      document.getElementById("jsDiv").style.height = "1vh";
-      document.getElementById("lineNumbersJS").style.height = "2.3vh";
-      document.getElementById("jsButton").innerHTML = "Expand";
-      document.getElementById("jsButton").style.height = "2.5vh";
-      document.getElementById("jsDiv").style.marginBottom = "10px";
-    } else {
-      jsExpanded = true;
-      document.getElementById("codeSpaceJS").style.padding = "0px";
-      document.getElementById("codeSpaceJS").style.paddingLeft = "5px";
-      document.getElementById("codeSpaceJS").style.height = "100%";
-      document.getElementById("lineNumbersJS").style.height = "100%";
-      document.getElementById("jsDiv").style.height = "22vh";
-      document.getElementById("jsButton").innerHTML = "Shrink JS";
-      document.getElementById("jsButton").style.height = "101.25%";
-      document.getElementById("jsDiv").style.marginBottom = "0px";
-    }
-    updateSizes();
   });
 
   document

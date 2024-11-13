@@ -208,6 +208,21 @@ textarea:focus {
   outline-width: 0;
 }
 
+#chatControls {
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+#chatControls button {
+  border: none;
+  padding: 2px;
+  border-radius: 5px;
+}
+
+#chatControls p {
+}
+
 #header {
   display: flex;
   height: 4vh;

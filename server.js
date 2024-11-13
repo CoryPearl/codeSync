@@ -2,18 +2,26 @@ const express = require("express");
 const fs = require("fs");
 const { createHash } = require("crypto");
 const http = require("http");
+const https = require("https");
 const { Server } = require("socket.io");
 const nodemailer = require("nodemailer");
 const handlebars = require("handlebars");
 const { spawn } = require("child_process");
 
-const app = express();
-const server = http.createServer(app);
-const io = new Server(server);
-
 const port = 3000;
 // const ip = "10.34.7.111";
-const ip = "";
+const ip = "192.168.86.165";
+
+const options = {
+  key: fs.readFileSync("key.pem"),
+  cert: fs.readFileSync("cert.pem"),
+};
+
+const app = express();
+const server = https.createServer(options, app);
+// const server = http.createServer(app);
+const io = new Server(server);
+
 var rooms = {};
 var codes = [];
 var authCodes = {};
@@ -485,6 +493,7 @@ io.on("connection", (socket) => {
       }
     }
   });
+
   //For voice chat, writin by ChatGPT
   //---------------------------------------
   socket.on("offer", (offer, roomId) => {
@@ -598,5 +607,5 @@ io.on("connection", (socket) => {
 });
 
 server.listen(port, ip, () => {
-  console.log(`Server is running on http://${ip}:${port}`);
+  console.log(`Server is running on https://${ip}:${port}`);
 });

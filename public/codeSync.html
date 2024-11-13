@@ -8,15 +8,18 @@
     <link rel="icon" href="assets/logo.png" />
   </head>
   <body>
-    <div id="chatControls">
-      <button id="startChat">Start Chat</button>
-      <button id="stopChat" disabled>Stop Chat</button>
-      <button id="muteUnmute" disabled>Mute</button>
-    </div>
     <nav>
       <div id="left">
         <h1 id="codeDisplay">Code:</h1>
         <h1 id="langDisplay">Language:</h1>
+        <div id="chatControls">
+          <p>Voice Chat Controls:</p>
+          <div>
+            <button id="startChat">Start Chat</button>
+            <button id="stopChat" disabled>Stop Chat</button>
+            <button id="muteUnmute" disabled>Mute</button>
+          </div>
+        </div>
       </div>
       <div id="right">
         <button id="leaveButton">Leave</button>
@@ -99,7 +102,8 @@
       </div>
     </div>
   </body>
-  <script src="codeSync.js" type="module"></script>
-  <!-- <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script> -->
+  <!-- type="module" -->
   <script src="socketio.js"></script>
+  <script src="codeSync.js"></script>
+  <!-- <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script> -->
 </html>
