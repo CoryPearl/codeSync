@@ -13,6 +13,7 @@ var jsExpanded = true;
 let localStream;
 const roomId = "voice-chat-room";
 let isMuted = false;
+let ableToRun = true;
 
 //join the code sync when page load
 fetch("/joinCodeSync", {
@@ -42,7 +43,6 @@ window.onload = () => {
   //update codeing space, eventlistners, and output if the room is html/css/js
   checkHtml();
   updateSizes();
-  addEventListeners();
 
   document.getElementById(
     "passwordDisplay"
@@ -66,6 +66,12 @@ window.onload = () => {
 
   addEventListeners();
 };
+
+socket.on("codeCompleate", () => {
+  ableToRun = true;
+  document.getElementById("run").style.backgroundColor = "rgb(6, 186, 12)";
+  document.getElementById("run").innerHTML = "Run";
+});
 
 //checking to see weather the person should be able to close the room or only leave it
 socket.on("ownerChecked", (data) => {
@@ -149,8 +155,16 @@ socket.on("reciveChat", (data) => {
 
 //output data recived after running code
 socket.on("ranData", (data) => {
-  document.getElementById("output").value = data;
+  document.getElementById("output").value += data + "\n";
 });
+
+function clearOutput() {
+  document.getElementById("output").value = "";
+}
+
+function command(command) {
+  socket.emit("userInput", command);
+}
 
 //Voice chat logic writin by ChatGPT
 //-------------------------------------------------------------
@@ -241,6 +255,8 @@ document.getElementById("stopChat").addEventListener("click", stopChat);
 document.getElementById("muteUnmute").addEventListener("click", toggleMute);
 //------------------------------------------------------------
 
+function stopProgram() {}
+
 //checking if code room is in html/css/js and updating it accordingly
 function checkHtml() {
   if (sessionStorage.getItem("language") == "html/css/js") {
@@ -264,9 +280,12 @@ function checkHtml() {
     document.getElementById("jsButton").style.display = "inline";
     document.getElementById("autoRunLabel").style.display = "inline";
     document.getElementById("autoRun").style.display = "inline";
+    document.getElementById("clear").style.display = "none";
+
+    document.getElementById("chatInput").placeholder = "Enter a message...";
 
     document.getElementById("output").style.width = "0px";
-    document.getElementById("outputFrame").style.width = "49vw";
+    document.getElementById("outputFrame").style.width = "47vw";
     document.getElementById("output").style.padding = "0px";
     document.getElementById("output").style.border = "0px";
 
@@ -374,7 +393,8 @@ function checkHtml() {
     });
   } else {
     updateLines("codeSpace", "lineNumbers");
-    document.getElementById("codeSpace").style.padding = "5px";
+    document.getElementById("codeSpace").style.paddingTop = "5px";
+    document.getElementById("codeSpace").style.paddingBottom = "5px";
     document
       .getElementById("codeArea")
       .removeChild(document.getElementById("cssDiv"));
@@ -617,8 +637,17 @@ function sendChat() {
   var message = document.getElementById("chatInput").value;
 
   if (message != "") {
-    socket.emit("sendChat", { code, name, message });
-    document.getElementById("chatInput").value = "";
+    if (
+      message.slice(0, 1) == "/" &&
+      sessionStorage.getItem("language") != "html/css/js" &&
+      sessionStorage.getItem("language") != "Javascript"
+    ) {
+      command(message.slice(1));
+      document.getElementById("chatInput").value = "";
+    } else {
+      socket.emit("sendChat", { code, name, message });
+      document.getElementById("chatInput").value = "";
+    }
   } else {
     alert("Error: Empty chat message");
   }
@@ -663,32 +692,48 @@ function scrollToChatBottom() {
     document.getElementById("chats").scrollHeight;
 }
 
+//chnaging console.log to reutn a value
+console.oldLog = console.log;
+console.log = function (value) {
+  console.oldLog(value);
+  return value;
+};
+
 //sending code to server to run
 function run() {
-  if (sessionStorage.getItem("language") == "html/css/js") {
-    const html = document.getElementById("codeSpace").value;
-    const css = document.getElementById("codeSpaceCSS").value;
-    const js = document.getElementById("codeSpaceJS").value;
+  if (ableToRun) {
+    if (sessionStorage.getItem("language") == "html/css/js") {
+      const html = document.getElementById("codeSpace").value;
+      const css = document.getElementById("codeSpaceCSS").value;
+      const js = document.getElementById("codeSpaceJS").value;
 
-    document.getElementById("outputFrame").contentDocument.body.innerHTML =
-      html + "<style>" + css + "</style>";
-    document.getElementById("outputFrame").contentWindow.eval(js);
-  } else if (sessionStorage.getItem("language") == "Javascript") {
-    const js = document.getElementById("codeSpace").value;
+      document.getElementById("outputFrame").contentDocument.body.innerHTML =
+        html + "<style>" + css + "</style>";
+      document.getElementById("outputFrame").contentWindow;
+      document.getElementById("outputFrame").contentWindow.eval(js);
+    } else if (sessionStorage.getItem("language") == "Javascript") {
+      const js = document.getElementById("codeSpace").value;
 
-    try {
-      const result = eval(js);
-      document.getElementById("output").value =
-        result !== undefined ? result : "Code exicuted without output";
-    } catch (error) {
-      document.getElementById("output").value = `Error: ${error.message}`;
+      try {
+        const result = eval(js);
+        document.getElementById("output").value =
+          result !== undefined ? result : "Code exicuted without output";
+      } catch (error) {
+        document.getElementById("output").value = `Error: ${error.message}`;
+      }
+    } else {
+      const language = sessionStorage.getItem("language");
+      const userData = document.getElementById("codeSpace").value;
+      const firstName = sessionStorage.getItem("firstName");
+      const lastName = sessionStorage.getItem("lastName");
+
+      socket.emit("run", { language, userData, firstName, lastName });
     }
-  } else {
-    const language = sessionStorage.getItem("language");
-    const userData = document.getElementById("codeSpace").value;
-    const firstName = sessionStorage.getItem("firstName");
-    const lastName = sessionStorage.getItem("lastName");
 
-    socket.emit("run", { language, userData, firstName, lastName });
+    document.getElementById("run").style.backgroundColor = "rgb(209, 56, 56)";
+    document.getElementById("run").innerHTML = "Stop";
+    ableToRun = false;
+  } else {
+    socket.emit("stopProgram");
   }
 }

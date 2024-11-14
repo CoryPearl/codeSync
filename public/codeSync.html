@@ -15,9 +15,13 @@
         <div id="chatControls">
           <p>Voice Chat Controls:</p>
           <div>
-            <button id="startChat">Start Chat</button>
-            <button id="stopChat" disabled>Stop Chat</button>
-            <button id="muteUnmute" disabled>Mute</button>
+            <button id="startChat" style="cursor: pointer">Start Chat</button>
+            <button id="stopChat" style="cursor: pointer" disabled>
+              Stop Chat
+            </button>
+            <button id="muteUnmute" style="cursor: pointer" disabled>
+              Mute
+            </button>
           </div>
         </div>
       </div>
@@ -45,6 +49,7 @@
             id="autoRun"
             style="display: none"
           />
+          <button id="clear" onclick="clearOutput()">Clear</button>
           <button id="run">Run</button>
         </div>
       </div>
@@ -90,7 +95,7 @@
         <div id="userInputs">
           <input
             type="text"
-            placeholder="Enter a message..."
+            placeholder="Enter a message, type a '/' before to send to server..."
             id="chatInput"
             autocomplete="off"
           />

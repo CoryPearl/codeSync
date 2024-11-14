@@ -12,8 +12,9 @@ const { spawn } = require("child_process");
 const protocal = "https";
 // const protocal = "http";
 const port = 3000;
-// const ip = "10.34.7.111";
-const ip = "192.168.86.165";
+//443 for https, 80 for http
+const ip = "10.34.7.111";
+// const ip = "192.168.86.165";
 
 //key and cert for https
 const options = {
@@ -518,13 +519,11 @@ io.on("connection", (socket) => {
 
   socket.on("join-room", (roomId) => {
     socket.join(roomId);
-    console.log(`User joined room: ${roomId}`);
   });
   //---------------------------------------
 
   //run code
   socket.on("run", ({ language, userData, firstName, lastName }) => {
-    //what to do if user asks for input???
     if (language == "Python") {
       if (fs.existsSync(`temp/${firstName}${lastName}.py`)) {
         console.log("File already Running");
@@ -539,18 +538,25 @@ io.on("connection", (socket) => {
         const pythonProcess = spawn("python3", [
           `temp/${firstName}${lastName}.py`,
         ]);
+
         pythonProcess.stdout.on("data", (data) => {
           io.to(socket.id).emit("ranData", data.toString());
         });
+
         pythonProcess.stderr.on("data", (data) => {
-          io.to(socket.id).emit(
-            "ranData",
-            data
-              .toString()
-              .replace(`File "/Users/1002562/Desktop/codeSync/temp/`, "")
-          );
+          io.to(socket.id).emit("ranData", data.toString());
         });
+
+        socket.on("userInput", (input) => {
+          pythonProcess.stdin.write(input + "\n");
+        });
+
+        socket.on("stopProgram", () => {
+          pythonProcess.kill();
+        });
+
         pythonProcess.on("close", (code) => {
+          io.to(socket.id).emit("codeCompleate");
           fs.unlink(`temp/${firstName}${lastName}.py`, (err) => {
             if (err) {
               console.error(err);
@@ -577,15 +583,17 @@ io.on("connection", (socket) => {
         javaProcess.stdout.on("data", (data) => {
           io.to(socket.id).emit("ranData", data.toString());
         });
+
         javaProcess.stderr.on("data", (data) => {
-          io.to(socket.id).emit(
-            "ranData",
-            data
-              .toString()
-              .replace(`File "/Users/1002562/Desktop/codeSync/temp/`, "")
-          );
+          io.to(socket.id).emit("ranData", data.toString());
         });
+
+        socket.on("userInput", (input) => {
+          javaProcess.stdin.write(input + "\n");
+        });
+
         javaProcess.on("close", (code) => {
+          io.to(socket.id).emit("codeCompleate");
           fs.unlink(`temp/${firstName}${lastName}.Java`, (err) => {
             if (err) {
               console.error(err);

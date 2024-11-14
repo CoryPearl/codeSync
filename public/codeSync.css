@@ -82,10 +82,10 @@ nav #right h1 {
 }
 
 #codeArea {
-  width: 47vw;
+  width: 49vw;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  flex-grow: 0.5;
   height: 66vh;
   gap: 1.3vh;
 }
@@ -201,7 +201,21 @@ nav #right h1 {
   background-color: rgb(50, 50, 50);
   resize: none;
   width: 49vw;
-  padding: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#commandDiv {
+  height: 20px;
+  width: 100%;
+}
+
+#commandLine {
+  height: 20px;
+}
+
+#commandSend {
+  height: 20px;
 }
 
 textarea:focus {
@@ -262,7 +276,7 @@ textarea:focus {
   width: 50vw;
 }
 
-#header #right button {
+#header #right #run {
   margin-right: 0.5vw;
   width: 100px;
   height: 20px;
@@ -273,8 +287,24 @@ textarea:focus {
   color: white;
 }
 
-#header #right button:hover {
+#header #right #run:hover {
   background-color: rgb(6, 123, 10);
+}
+
+#header #right #clear {
+  margin-right: 0.5vw;
+  width: 100px;
+  height: 20px;
+  cursor: pointer;
+  border-radius: 7.5px;
+  border: none;
+  background-color: rgb(209, 56, 56);
+
+  color: white;
+}
+
+#header #right #clear:hover {
+  background-color: rgb(173, 50, 50);
 }
 
 #header2 {
@@ -365,7 +395,7 @@ textarea:focus {
 }
 
 #users {
-  width: 49.5vw;
+  width: 49vw;
   height: 100%;
   background-color: rgb(50, 50, 50);
   border-radius: 10px;
