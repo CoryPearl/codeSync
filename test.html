@@ -21,21 +21,32 @@
       padding: 0px;
     }
 
-    input {
+    #input {
       position: absolute;
       top: 0;
       left: 0;
+      border: none;
+      background-color: transparent;
+      color: transparent;
+      resize: none;
+    }
+
+    #input:focus {
+      outline-width: 0;
     }
 
     pre {
+      z-index: -1;
       position: absolute;
       top: 0;
       left: 0;
+      height: 100px;
+      cursor: text;
     }
   </style>
   <body>
-    <textarea id="input"></textarea>
     <pre><code class="language-python" id="code"></code></pre>
+    <textarea id="input"></textarea>
   </body>
   <script>
     hljs.highlightAll();

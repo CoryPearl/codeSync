@@ -1,19 +1,15 @@
 TODO:
 - add syntax highlighting
-- Problem with moving cursor around
-- if owenr closes tab room closes
 
 - sizes are weird for html/css/js buttons
 - js dosn't work for html/css/js
 
-- codeSync sizing test on bigger monitor
-
 ---------------------------------------------------------------
+
 Links:
 - MySql: https://www.w3schools.com/nodejs/nodejs_mysql.asp
 - Highlight JS: https://highlightjs.org/
 - Prisim JS: https://prismjs.com/test.html#language=markup
-- python child_process unbuffered in js
 
 ---------------------------------------------------------------
 
@@ -28,8 +24,7 @@ Sorces:
 ---------------------------------------------------------------
 
 Ubuntu TODO:
-- HTTPS: https://ubuntu.com/server/docs/certificates
-- Domain name: https://www.domain.com/products/domain/domain-search-results
+- Get running on public ip
 - Install python and java and update run code
 
 SSH Info:
@@ -37,3 +32,11 @@ SSH Info:
 - Password: plaza0757fly977dog
 - IP to ssh into: 108.18.127.32
 - Port to ssh into: 22
+- Shutdown: sudo shutdown -h now
+- To connect from inside network: ssh pi@192.168.86.168
+- To connect from outside network: ssh pi@108.18.127.32 -p 22
+- Display info: landscape-sysinfo
+- Star wars: telnet towel.blinkenlights.nl
+- Train: sl
+- Cowsay: cowsay something
+- nsnake

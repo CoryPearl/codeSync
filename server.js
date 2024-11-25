@@ -10,11 +10,11 @@ const handlebars = require("handlebars");
 const { spawn } = require("child_process");
 
 const protocal = "https";
-// const protocal = "http";
-const port = 3000;
-//443 for https, 80 for http
+//const protocal = "http";
+const port = 8443;
 const ip = "10.34.7.111";
-// const ip = "192.168.86.165";
+//const ip = "192.168.86.165";
+//const ip = "192.168.86.168"
 
 //key and cert for https
 const options = {
@@ -25,7 +25,7 @@ const options = {
 //app creation, https server creation, and io creation in the server
 const app = express();
 const server = https.createServer(options, app);
-// const server = http.createServer(app);
+//const server = http.createServer(app);
 const io = new Server(server);
 
 var rooms = {};
@@ -109,6 +109,21 @@ var timer = setInterval(function () {
       authCodes[key].time -= 1;
     } else {
       delete authCodes[key];
+    }
+  }
+}, 1000);
+
+//check if any rooms dont have their owner connected
+var checkOwnerConnected = setInterval(function () {
+  for (const code of codes) {
+    const room = rooms[code];
+    if (!room.users.includes(room.owner)) {
+      delete rooms[code];
+      codes.splice(codes.indexOf(code));
+      room.socketIDs.forEach((socketId) => {
+        io.to(socketId).emit("ownerClosed");
+      });
+      console.log(`Room deleted with code because owner closed tab: ${code}`);
     }
   }
 }, 1000);
@@ -216,6 +231,7 @@ app.post("/deleteRoom", (req, res) => {
   if (rooms[code]) {
     if (rooms[code].ownerPassword == password) {
       delete rooms[code];
+      delete codes.indexOf(code);
       console.log(`Room deleted with code: ${code}`);
       return res.status(200).json({ success: true });
     }
@@ -620,6 +636,33 @@ io.on("connection", (socket) => {
       }
     }
   });
+});
+
+//server side commands
+process.stdin.on("data", (data) => {
+  const command = data.toString().trim();
+  if (command == "help") {
+    console.log("Commands:\nstop\nclose-{code}");
+  } else if (command == "stop") {
+    console.log("Stopping the process...");
+    process.exit(0);
+  } else if (command.split("-")[0] == "close") {
+    const code = Number(command.split("-")[1]);
+    if (rooms[code]) {
+      const room = rooms[code];
+      delete rooms[code];
+      codes.splice(codes.indexOf(code));
+      room.socketIDs.forEach((socketId) => {
+        io.to(socketId).emit("ownerClosed");
+      });
+      console.log(`Room deleted with code: ${code}`);
+    } else {
+      console.log("Room does not exist");
+    }
+  } else {
+    console.log("Command not recognized:", command);
+    console.log("Try: help");
+  }
 });
 
 server.listen(port, ip, () => {
