@@ -6,6 +6,16 @@
     <title>CodeSync | INSERT ID</title>
     <link rel="stylesheet" href="codeSync.css" />
     <link rel="icon" href="assets/logo.png" />
+    <link
+      rel="stylesheet"
+      href="highlight/highlight.css"
+    />
+    <script src="highlight/highlight.js"></script>
+    <script src="highlight/javascirpt.js"></script>
+    <script src="highlight/python.js"></script>
+    <script src="highlight/html.js"></script>
+    <script src="highlight/css.js"></script>
+    <script src="highlight/java.js"></script>
   </head>
   <body>
     <nav>
@@ -106,6 +116,16 @@
         <p id="connectedUsers"></p>
       </div>
     </div>
+    <!-- no one look at these next lines please -->
+    <pre
+      id="pre"
+      width: 47vw; height: 66vh;
+      style="position: absolute; top: 0px; left: 0px; pointer-events: none; display: none;"
+    ><code id="code" style="overflow-y: scroll; width: 47.1vw; height: 66vh; padding: 0px; background-color: transparent; font-size: 15px; border-radius: 0px 10px 10px 0px; padding-bottom: 5px; padding-top: 5px; padding-left: 5px;border-top: 1px solid rgb(118, 118, 118); cursor: default; 
+  border-bottom: 1px solid rgb(118, 118, 118);
+  border-right: 1px solid rgb(118, 118, 118);
+  line-height: 15px;
+"></code></pre>
   </body>
   <script src="socketio.js"></script>
   <script src="codeSync.js"></script>

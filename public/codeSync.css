@@ -138,7 +138,8 @@ nav #right h1 {
   line-height: 15px;
   font-size: 15px;
   word-break: break-all;
-  color: white;
+  color: transparent;
+  caret-color: white;
   border-radius: 0px 10px 10px 0px;
   padding-left: 5px;
   padding-top: 5px;
@@ -181,7 +182,7 @@ nav #right h1 {
   border-radius: 10px;
   padding: 5px;
   background-color: white;
-  /* add border */
+  border: 2px solid rgb(118, 118, 118);
 }
 
 #runDiv {
@@ -406,4 +407,18 @@ textarea:focus {
   color: rgb(222, 222, 222);
   padding: 5px;
   text-wrap: wrap;
+}
+
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: white;
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+  50% {
+    background: transparent;
+  }
 }

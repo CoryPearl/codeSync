@@ -118,6 +118,10 @@ socket.on("roomData", (data) => {
 
   document.getElementById("codeSpace").selectionStart = localCursorPos;
   document.getElementById("codeSpace").selectionEnd = localCursorPos;
+
+  document.getElementById("code").innerHTML =
+    document.getElementById("codeSpace").value;
+  hljs.highlightAll();
 });
 
 socket.on("ownerClosed", () => {
@@ -125,6 +129,11 @@ socket.on("ownerClosed", () => {
     alert("Room closed by owner, will redirect to home");
     window.location.href = "index.html";
   }
+});
+
+socket.on("serverClosed", () => {
+  alert("Room closed by server, will redirect to home");
+  window.location.href = "index.html";
 });
 
 //reciveing chat form server and displaying
@@ -260,16 +269,13 @@ function stopProgram() {}
 //checking if code room is in html/css/js and updating it accordingly
 function checkHtml() {
   if (sessionStorage.getItem("language") == "html/css/js") {
-    document.getElementById("lineNumbers").style.height = "21.3vh";
-    document.getElementById("codeSpace").style.height = "20vh";
-    document.getElementById("lineNumbersCSS").style.height = "21.3vh";
-    document.getElementById("codeSpaceCSS").style.height = "20vh";
-    document.getElementById("lineNumbersJS").style.height = "21.3vh";
-    document.getElementById("codeSpaceJS").style.height = "20vh";
-
+    //fuck this shit this sucks
+    document.getElementById("codeSpace").style.color = "white";
     document.getElementById("codeSpace").style.borderRadius = "0px";
     document.getElementById("codeSpaceCSS").style.borderRadius = "0px";
     document.getElementById("codeSpaceJS").style.borderRadius = "0px";
+
+    document.getElementById("codeArea").style.height = "100%";
 
     document.getElementById("lineNumbersCSS").style.display = "inline";
     document.getElementById("codeSpaceCSS").style.display = "inline";
@@ -282,10 +288,46 @@ function checkHtml() {
     document.getElementById("autoRun").style.display = "inline";
     document.getElementById("clear").style.display = "none";
 
+    //html box
+    document.getElementById("codeSpace").style.padding = "0px";
+    document.getElementById("codeSpace").style.paddingLeft = "5px";
+    document.getElementById("codeSpace").style.height = "100%";
+    document.getElementById("codeSpace").style.paddingTop = "5px";
+    document.getElementById("lineNumbers").style.height = "100%";
+    document.getElementById("htmlDiv").style.height = "22vh";
+    document.getElementById("htmlDiv").style.width = "49.75vw";
+    document.getElementById("htmlButton").innerHTML = "Shrink HTML";
+    document.getElementById("htmlButton").style.height = "101.25%";
+    document.getElementById("htmlDiv").style.marginBottom = "0px";
+
+    //css box
+    document.getElementById("codeSpaceCSS").style.padding = "0px";
+    document.getElementById("codeSpaceCSS").style.paddingLeft = "5px";
+    document.getElementById("codeSpaceCSS").style.paddingTop = "5px";
+    document.getElementById("codeSpaceCSS").style.height = "100%";
+    document.getElementById("lineNumbersCSS").style.height = "100%";
+    document.getElementById("cssDiv").style.height = "22vh";
+    document.getElementById("cssDiv").style.width = "49.75vw";
+    document.getElementById("cssButton").innerHTML = "Shrink CSS";
+    document.getElementById("cssButton").style.height = "101.25%";
+    document.getElementById("cssDiv").style.marginBottom = "0px";
+
+    //js box
+    document.getElementById("codeSpaceJS").style.padding = "0px";
+    document.getElementById("codeSpaceJS").style.paddingLeft = "5px";
+    document.getElementById("codeSpaceJS").style.paddingTop = "5px";
+    document.getElementById("codeSpaceJS").style.height = "100%";
+    document.getElementById("lineNumbersJS").style.height = "100%";
+    document.getElementById("jsDiv").style.height = "22vh";
+    document.getElementById("jsDiv").style.width = "49.75vw";
+    document.getElementById("jsButton").innerHTML = "Shrink JS";
+    document.getElementById("jsButton").style.height = "101.25%";
+    document.getElementById("jsDiv").style.marginBottom = "0px";
+
     document.getElementById("chatInput").placeholder = "Enter a message...";
 
     document.getElementById("output").style.width = "0px";
-    document.getElementById("outputFrame").style.width = "47vw";
+    document.getElementById("outputFrame").style.width = "48vw";
     document.getElementById("output").style.padding = "0px";
     document.getElementById("output").style.border = "0px";
 
@@ -299,8 +341,8 @@ function checkHtml() {
       }
     }, 10);
 
-    addTextAreaKeys("codeSpaceCSS");
-    addTextAreaKeys("codeSpaceJS");
+    addTextAreaKeys("codeSpaceCSS", "lineNumbersCSS");
+    addTextAreaKeys("codeSpaceJS", "lineNumbersJS");
 
     document
       .getElementById("codeSpaceCSS")
@@ -327,11 +369,12 @@ function checkHtml() {
           document.getElementById("lineNumbers").style.height = "2.3vh";
           document.getElementById("htmlButton").innerHTML = "Expand";
           document.getElementById("htmlButton").style.height = "2.5vh";
-          document.getElementById("htmlDiv").style.marginBottom = "10px";
+          document.getElementById("htmlDiv").style.marginBottom = "15px";
         } else {
           htmlExpanded = true;
           document.getElementById("codeSpace").style.padding = "0px";
           document.getElementById("codeSpace").style.paddingLeft = "5px";
+          document.getElementById("codeSpace").style.paddingTop = "5px";
           document.getElementById("codeSpace").style.height = "100%";
           document.getElementById("lineNumbers").style.height = "100%";
           document.getElementById("htmlDiv").style.height = "22vh";
@@ -353,11 +396,12 @@ function checkHtml() {
           document.getElementById("lineNumbersCSS").style.height = "2.3vh";
           document.getElementById("cssButton").innerHTML = "Expand";
           document.getElementById("cssButton").style.height = "2.5vh";
-          document.getElementById("cssDiv").style.marginBottom = "10px";
+          document.getElementById("cssDiv").style.marginBottom = "15px";
         } else {
           cssExpanded = true;
           document.getElementById("codeSpaceCSS").style.padding = "0px";
           document.getElementById("codeSpaceCSS").style.paddingLeft = "5px";
+          document.getElementById("codeSpaceCSS").style.paddingTop = "5px";
           document.getElementById("codeSpaceCSS").style.height = "100%";
           document.getElementById("lineNumbersCSS").style.height = "100%";
           document.getElementById("cssDiv").style.height = "22vh";
@@ -377,11 +421,12 @@ function checkHtml() {
         document.getElementById("lineNumbersJS").style.height = "2.3vh";
         document.getElementById("jsButton").innerHTML = "Expand";
         document.getElementById("jsButton").style.height = "2.5vh";
-        document.getElementById("jsDiv").style.marginBottom = "10px";
+        document.getElementById("jsDiv").style.marginBottom = "15px";
       } else {
         jsExpanded = true;
         document.getElementById("codeSpaceJS").style.padding = "0px";
         document.getElementById("codeSpaceJS").style.paddingLeft = "5px";
+        document.getElementById("codeSpaceJS").style.paddingTop = "5px";
         document.getElementById("codeSpaceJS").style.height = "100%";
         document.getElementById("lineNumbersJS").style.height = "100%";
         document.getElementById("jsDiv").style.height = "22vh";
@@ -408,32 +453,50 @@ function checkHtml() {
     document.getElementById("htmlDiv").style.width = "100%";
 
     document.getElementById("outputFrame").style.display = "none";
+
+    document.getElementById("pre").style.display = "inline";
   }
 }
 
-//adding keybinds to textareas such as tab and when you tyep ( it auto closes with a )
-function addTextAreaKeys(name) {
+//adding keybinds to textareas such as tab and when you type ( it auto closes with a )
+function addTextAreaKeys(name, lineNumberName) {
   document.getElementById(name).addEventListener("keydown", (e) => {
     var textarea = document.getElementById(name);
     const cursorPos = textarea.selectionStart;
     const currentText = textarea.value;
 
-    if (e.key === "(") {
+    if (e.key === "Enter") {
+      e.preventDefault();
+
+      const textBefore = textarea.value.substring(0, cursorPos);
+      const textAfter = textarea.value.substring(cursorPos);
+
+      const lastLineMatch = textBefore.match(/(^|\n)([ \t]*)[^\n]*$/);
+      const indentation = lastLineMatch ? lastLineMatch[2] : "";
+
+      const newText = textBefore + "\n" + indentation + textAfter;
+      textarea.value = newText;
+
+      const newCaretPosition = cursorPos + 1 + indentation.length;
+      textarea.setSelectionRange(newCaretPosition, newCaretPosition);
+
+      updateLines(name, lineNumberName);
+    } else if (e.key === "(") {
       e.preventDefault();
       textarea.value =
-        currentText.slice(0, cursorPos) + "()" + currentText.slice(cursorPos);
+        currentText.slice(0, cursorPos) + "(\n)" + currentText.slice(cursorPos);
       textarea.selectionStart = cursorPos + 1;
       textarea.selectionEnd = cursorPos + 1;
     } else if (e.key === "{") {
       e.preventDefault();
       textarea.value =
-        currentText.slice(0, cursorPos) + "{}" + currentText.slice(cursorPos);
+        currentText.slice(0, cursorPos) + "{\n}" + currentText.slice(cursorPos);
       textarea.selectionStart = cursorPos + 1;
       textarea.selectionEnd = cursorPos + 1;
     } else if (e.key === "[") {
       e.preventDefault();
       textarea.value =
-        currentText.slice(0, cursorPos) + "[]" + currentText.slice(cursorPos);
+        currentText.slice(0, cursorPos) + "[\n]" + currentText.slice(cursorPos);
       textarea.selectionStart = cursorPos + 1;
       textarea.selectionEnd = cursorPos + 1;
     } else if (e.key === '"') {
@@ -473,6 +536,9 @@ function addTextAreaKeys(name) {
         textarea.selectionStart = textarea.selectionEnd = start + 1;
       }
     }
+    document.getElementById("code").innerHTML =
+      document.getElementById("codeSpace").value;
+    hljs.highlightAll();
   });
 }
 
@@ -485,6 +551,9 @@ function addEventListeners() {
     });
 
   document.getElementById("codeSpace").addEventListener("input", function (e) {
+    document.getElementById("code").innerHTML =
+      document.getElementById("codeSpace").value;
+    hljs.highlightAll();
     sendData();
     updateLines("codeSpace", "lineNumbers");
   });
@@ -529,7 +598,7 @@ function addEventListeners() {
     }
   });
 
-  addTextAreaKeys("codeSpace");
+  addTextAreaKeys("codeSpace", "lineNumbers");
 }
 
 //downlading the working file or files into a txt file
@@ -709,7 +778,6 @@ function run() {
 
       document.getElementById("outputFrame").contentDocument.body.innerHTML =
         html + "<style>" + css + "</style>";
-      document.getElementById("outputFrame").contentWindow;
       document.getElementById("outputFrame").contentWindow.eval(js);
     } else if (sessionStorage.getItem("language") == "Javascript") {
       const js = document.getElementById("codeSpace").value;
@@ -721,6 +789,10 @@ function run() {
       } catch (error) {
         document.getElementById("output").value = `Error: ${error.message}`;
       }
+
+      document.getElementById("run").style.backgroundColor = "rgb(209, 56, 56)";
+      document.getElementById("run").innerHTML = "Stop";
+      ableToRun = false;
     } else {
       const language = sessionStorage.getItem("language");
       const userData = document.getElementById("codeSpace").value;
@@ -728,12 +800,35 @@ function run() {
       const lastName = sessionStorage.getItem("lastName");
 
       socket.emit("run", { language, userData, firstName, lastName });
-    }
 
-    document.getElementById("run").style.backgroundColor = "rgb(209, 56, 56)";
-    document.getElementById("run").innerHTML = "Stop";
-    ableToRun = false;
+      document.getElementById("run").style.backgroundColor = "rgb(209, 56, 56)";
+      document.getElementById("run").innerHTML = "Stop";
+      ableToRun = false;
+    }
   } else {
     socket.emit("stopProgram");
   }
+}
+
+if (sessionStorage.getItem("language") != "html/css/js") {
+  const targetElement = document.getElementById("pre");
+
+  const referenceElement = document.getElementById("codeSpace");
+
+  const referenceRect = referenceElement.getBoundingClientRect();
+
+  targetElement.style.left = referenceRect.left + 5 + "px";
+  targetElement.style.top = referenceRect.top + "px";
+
+  if (sessionStorage.getItem("language") == "Python") {
+    document.getElementById("code").className = "language-python";
+  } else if (sessionStorage.getItem("language") == "Java") {
+    document.getElementById("code").className = "language-java";
+  } else if (sessionStorage.getItem("language") == "Javascript") {
+    document.getElementById("code").className = "language-javascript";
+  }
+
+  document.getElementById("code").innerHTML =
+    document.getElementById("codeSpace").value;
+  hljs.highlightAll();
 }

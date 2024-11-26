@@ -116,14 +116,16 @@ var timer = setInterval(function () {
 //check if any rooms dont have their owner connected
 var checkOwnerConnected = setInterval(function () {
   for (const code of codes) {
-    const room = rooms[code];
-    if (!room.users.includes(room.owner)) {
-      delete rooms[code];
-      codes.splice(codes.indexOf(code));
-      room.socketIDs.forEach((socketId) => {
-        io.to(socketId).emit("ownerClosed");
-      });
-      console.log(`Room deleted with code because owner closed tab: ${code}`);
+    if (rooms[code]) {
+      const room = rooms[code];
+      if (!room.users.includes(room.owner)) {
+        delete rooms[code];
+        codes.splice(codes.indexOf(code));
+        room.socketIDs.forEach((socketId) => {
+          io.to(socketId).emit("ownerClosed");
+        });
+        console.log(`Room deleted with code because owner closed tab: ${code}`);
+      }
     }
   }
 }, 1000);
@@ -642,7 +644,7 @@ io.on("connection", (socket) => {
 process.stdin.on("data", (data) => {
   const command = data.toString().trim();
   if (command == "help") {
-    console.log("Commands:\nstop\nclose-{code}");
+    console.log("Commands:\n- stop\n- close-{code}\n- display-{code}\n- codes");
   } else if (command == "stop") {
     console.log("Stopping the process...");
     process.exit(0);
@@ -653,11 +655,22 @@ process.stdin.on("data", (data) => {
       delete rooms[code];
       codes.splice(codes.indexOf(code));
       room.socketIDs.forEach((socketId) => {
-        io.to(socketId).emit("ownerClosed");
+        io.to(socketId).emit("serverClosed");
       });
       console.log(`Room deleted with code: ${code}`);
     } else {
       console.log("Room does not exist");
+    }
+  } else if (command.split("-")[0] == "display") {
+    const code = Number(command.split("-")[1]);
+    if (rooms[code]) {
+      console.log(rooms[code]);
+    } else {
+      console.log("Room does not exist");
+    }
+  } else if (command == "codes") {
+    for (const code in codes) {
+      console.log(`- ${code}`);
     }
   } else {
     console.log("Command not recognized:", command);
@@ -668,3 +681,5 @@ process.stdin.on("data", (data) => {
 server.listen(port, ip, () => {
   console.log(`Server is running on ${protocal}://${ip}:${port}`);
 });
+
+//codes dont work

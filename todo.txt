@@ -1,15 +1,10 @@
 TODO:
-- add syntax highlighting
+- scroll with highlight
+- update picture on main paige
 
-- sizes are weird for html/css/js buttons
 - js dosn't work for html/css/js
-
----------------------------------------------------------------
-
-Links:
-- MySql: https://www.w3schools.com/nodejs/nodejs_mysql.asp
-- Highlight JS: https://highlightjs.org/
-- Prisim JS: https://prismjs.com/test.html#language=markup
+- html/css/js boxes need top padding, maybe 5px
+- highlighting for html css js
 
 ---------------------------------------------------------------
 
@@ -19,7 +14,7 @@ Sorces:
 - google ai for simple syntax questions
 - stack overflow
 - socketio.js from (c) 2014-2023 Guillermo Rauch
-- highlight js
+- highlight js from 2006-2022 Ivan Sagalaev and other contributors
 
 ---------------------------------------------------------------
 
