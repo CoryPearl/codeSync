@@ -669,8 +669,8 @@ process.stdin.on("data", (data) => {
       console.log("Room does not exist");
     }
   } else if (command == "codes") {
-    for (const code in codes) {
-      console.log(`- ${code}`);
+    for (let i = 0; i < codes.length; i++) {
+      console.log(`- ${codes[i]}`);
     }
   } else {
     console.log("Command not recognized:", command);
@@ -681,5 +681,3 @@ process.stdin.on("data", (data) => {
 server.listen(port, ip, () => {
   console.log(`Server is running on ${protocal}://${ip}:${port}`);
 });
-
-//codes dont work

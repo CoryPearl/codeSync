@@ -43,6 +43,7 @@ window.onload = () => {
   //update codeing space, eventlistners, and output if the room is html/css/js
   checkHtml();
   updateSizes();
+  setHighlight();
 
   document.getElementById(
     "passwordDisplay"
@@ -264,7 +265,30 @@ document.getElementById("stopChat").addEventListener("click", stopChat);
 document.getElementById("muteUnmute").addEventListener("click", toggleMute);
 //------------------------------------------------------------
 
-function stopProgram() {}
+function setHighlight() {
+  if (sessionStorage.getItem("language") != "html/css/js") {
+    const targetElement = document.getElementById("pre");
+
+    const referenceElement = document.getElementById("codeSpace");
+
+    const referenceRect = referenceElement.getBoundingClientRect();
+
+    targetElement.style.left = referenceRect.left + 5 + "px";
+    targetElement.style.top = referenceRect.top + "px";
+
+    if (sessionStorage.getItem("language") == "Python") {
+      document.getElementById("code").className = "language-python";
+    } else if (sessionStorage.getItem("language") == "Java") {
+      document.getElementById("code").className = "language-java";
+    } else if (sessionStorage.getItem("language") == "Javascript") {
+      document.getElementById("code").className = "language-javascript";
+    }
+
+    document.getElementById("code").innerHTML =
+      document.getElementById("codeSpace").value;
+    hljs.highlightAll();
+  }
+}
 
 //checking if code room is in html/css/js and updating it accordingly
 function checkHtml() {
@@ -808,27 +832,4 @@ function run() {
   } else {
     socket.emit("stopProgram");
   }
-}
-
-if (sessionStorage.getItem("language") != "html/css/js") {
-  const targetElement = document.getElementById("pre");
-
-  const referenceElement = document.getElementById("codeSpace");
-
-  const referenceRect = referenceElement.getBoundingClientRect();
-
-  targetElement.style.left = referenceRect.left + 5 + "px";
-  targetElement.style.top = referenceRect.top + "px";
-
-  if (sessionStorage.getItem("language") == "Python") {
-    document.getElementById("code").className = "language-python";
-  } else if (sessionStorage.getItem("language") == "Java") {
-    document.getElementById("code").className = "language-java";
-  } else if (sessionStorage.getItem("language") == "Javascript") {
-    document.getElementById("code").className = "language-javascript";
-  }
-
-  document.getElementById("code").innerHTML =
-    document.getElementById("codeSpace").value;
-  hljs.highlightAll();
 }
