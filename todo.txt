@@ -1,6 +1,5 @@
 TODO:
-- scroll with highlight
-- update picture on main paige
+- scroll is weird
 
 - js dosn't work for html/css/js
 - html/css/js boxes need top padding, maybe 5px

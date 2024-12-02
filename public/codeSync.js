@@ -174,6 +174,17 @@ function clearOutput() {
 
 function command(command) {
   socket.emit("userInput", command);
+
+  const message = document.createElement("p");
+
+  message.textContent = `Sent to server: ${command}`;
+  message.style.width = "100%";
+  message.style.textWrap = "wrap";
+  message.style.color = "white";
+  message.style.paddingLeft = "5px";
+
+  document.getElementById("chats").appendChild(message);
+  scrollToChatBottom();
 }
 
 //Voice chat logic writin by ChatGPT
@@ -508,19 +519,19 @@ function addTextAreaKeys(name, lineNumberName) {
     } else if (e.key === "(") {
       e.preventDefault();
       textarea.value =
-        currentText.slice(0, cursorPos) + "(\n)" + currentText.slice(cursorPos);
+        currentText.slice(0, cursorPos) + "()" + currentText.slice(cursorPos);
       textarea.selectionStart = cursorPos + 1;
       textarea.selectionEnd = cursorPos + 1;
     } else if (e.key === "{") {
       e.preventDefault();
       textarea.value =
-        currentText.slice(0, cursorPos) + "{\n}" + currentText.slice(cursorPos);
+        currentText.slice(0, cursorPos) + "{}" + currentText.slice(cursorPos);
       textarea.selectionStart = cursorPos + 1;
       textarea.selectionEnd = cursorPos + 1;
     } else if (e.key === "[") {
       e.preventDefault();
       textarea.value =
-        currentText.slice(0, cursorPos) + "[\n]" + currentText.slice(cursorPos);
+        currentText.slice(0, cursorPos) + "[]" + currentText.slice(cursorPos);
       textarea.selectionStart = cursorPos + 1;
       textarea.selectionEnd = cursorPos + 1;
     } else if (e.key === '"') {
@@ -773,11 +784,16 @@ function updateScroll() {
   document.getElementById("lineNumbers").scrollTop =
     document.getElementById("codeSpace").scrollTop;
 
-  document.getElementById("lineNumbersCSS").scrollTop =
-    document.getElementById("codeSpaceCSS").scrollTop;
+  document.getElementById("code").scrollTop =
+    document.getElementById("codeSpace").scrollTop;
 
-  document.getElementById("lineNumbersJS").scrollTop =
-    document.getElementById("codeSpaceJS").scrollTop;
+  if (sessionStorage.getItem("language") == "html/css/js") {
+    document.getElementById("lineNumbersCSS").scrollTop =
+      document.getElementById("codeSpaceCSS").scrollTop;
+
+    document.getElementById("lineNumbersJS").scrollTop =
+      document.getElementById("codeSpaceJS").scrollTop;
+  }
 }
 
 function scrollToChatBottom() {
