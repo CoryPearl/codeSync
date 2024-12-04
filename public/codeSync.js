@@ -305,6 +305,8 @@ function setHighlight() {
 function checkHtml() {
   if (sessionStorage.getItem("language") == "html/css/js") {
     //fuck this shit this sucks
+    document.getElementById("directions").style.display = "inline";
+
     document.getElementById("codeSpace").style.color = "white";
     document.getElementById("codeSpace").style.borderRadius = "0px";
     document.getElementById("codeSpaceCSS").style.borderRadius = "0px";
@@ -796,6 +798,7 @@ function updateScroll() {
   }
 }
 
+//keep chat scrolled to bottom to see most recent text messages
 function scrollToChatBottom() {
   document.getElementById("chats").scrollTop =
     document.getElementById("chats").scrollHeight;

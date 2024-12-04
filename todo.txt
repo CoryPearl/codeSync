@@ -1,9 +1,12 @@
 TODO:
 - scroll is weird
+- needs to update when return key is hit somehow
 
 - js dosn't work for html/css/js
 - html/css/js boxes need top padding, maybe 5px
 - highlighting for html css js
+
+- remove auto login when done
 
 ---------------------------------------------------------------
 
@@ -14,23 +17,3 @@ Sorces:
 - stack overflow
 - socketio.js from (c) 2014-2023 Guillermo Rauch
 - highlight js from 2006-2022 Ivan Sagalaev and other contributors
-
----------------------------------------------------------------
-
-Ubuntu TODO:
-- Get running on public ip
-- Install python and java and update run code
-
-SSH Info:
-- Private IP: 192.168.86.168
-- Password: plaza0757fly977dog
-- IP to ssh into: 108.18.127.32
-- Port to ssh into: 22
-- Shutdown: sudo shutdown -h now
-- To connect from inside network: ssh pi@192.168.86.168
-- To connect from outside network: ssh pi@108.18.127.32 -p 22
-- Display info: landscape-sysinfo
-- Star wars: telnet towel.blinkenlights.nl
-- Train: sl
-- Cowsay: cowsay something
-- nsnake

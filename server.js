@@ -8,18 +8,20 @@ const { Server } = require("socket.io");
 const nodemailer = require("nodemailer");
 const handlebars = require("handlebars");
 const { spawn } = require("child_process");
+const mysql = require("mysql2");
+require("dotenv").config({ path: "serverAssets/.env" });
 
 const protocal = "https";
 //const protocal = "http";
 const port = 8443;
 const ip = "10.34.7.111";
-//const ip = "192.168.86.165";
-//const ip = "192.168.86.168"
+// const ip = "192.168.86.155";
+// const ip = "192.168.86.168";
 
 //key and cert for https
 const options = {
-  key: fs.readFileSync("keys/key.pem"),
-  cert: fs.readFileSync("keys/cert.pem"),
+  key: fs.readFileSync("serverAssets/keys/key.pem"),
+  cert: fs.readFileSync("serverAssets/keys/cert.pem"),
 };
 
 //app creation, https server creation, and io creation in the server
@@ -137,33 +139,45 @@ app.post("/send2fa", (req, res) => {
   return res.status(200).json({ success: true });
 });
 
-//check 2fa code
+//check 2fa code for users.json
+// app.post("/check2fa", (req, res) => {
+//   var { authCode, email } = req.body;
+
+//   fs.readFile("serverAssets/users.json", "utf8", (err, data) => {
+//     if (err && err.code !== "ENOENT") {
+//       return res.status(500).json({ error: "Server error" });
+//     } else {
+//       let users = [];
+//       if (data) {
+//         users = JSON.parse(data);
+//       }
+
+//       //check if email already exists
+//       const existingUser = users.find((user) => user.email === email);
+//       if (existingUser) {
+//         return res.status(400).json({ error: "Email already exists" });
+//       } else {
+//         if (authCodes[authCode] && authCodes[authCode].email == email) {
+//           delete authCodes[authCode];
+//           return res.status(200).json({ success: true });
+//         } else {
+//           return res.status(200).json({ success: false });
+//         }
+//       }
+//     }
+//   });
+// });
+
+//check 2fa validation
 app.post("/check2fa", (req, res) => {
   var { authCode, email } = req.body;
 
-  fs.readFile("users.json", "utf8", (err, data) => {
-    if (err && err.code !== "ENOENT") {
-      return res.status(500).json({ error: "Server error" });
-    } else {
-      let users = [];
-      if (data) {
-        users = JSON.parse(data);
-      }
-
-      //check if email already exists
-      const existingUser = users.find((user) => user.email === email);
-      if (existingUser) {
-        return res.status(400).json({ error: "Email already exists" });
-      } else {
-        if (authCodes[authCode] && authCodes[authCode].email == email) {
-          delete authCodes[authCode];
-          return res.status(200).json({ success: true });
-        } else {
-          return res.status(200).json({ success: false });
-        }
-      }
-    }
-  });
+  if (authCodes[authCode] && authCodes[authCode].email == email) {
+    delete authCodes[authCode];
+    return res.status(200).json({ success: true });
+  } else {
+    return res.status(200).json({ success: false });
+  }
 });
 
 //create codeSync
@@ -242,7 +256,7 @@ app.post("/deleteRoom", (req, res) => {
 
 //join codesync
 app.post("/joinCodeSync", (req, res) => {
-  var { code, password, firstName, lastName } = req.body;
+  var { code, password, firstfName, lastName } = req.body;
 
   var roomFound = false;
   if (rooms[code]) {
@@ -261,54 +275,177 @@ app.post("/joinCodeSync", (req, res) => {
   }
 });
 
+//OLD ACCOUNT CODE, KEEPING JUST IN CASE
+//------------------------------------------------------------------------------------------------------------------------------
 //create account
+// app.post("/createAccount", (req, res) => {
+//   var { firstName, lastName, email, password } = req.body;
+
+//   password = sha256(password);
+
+//   const newUser = {
+//     firstName,
+//     lastName,
+//     email,
+//     password,
+//   };
+
+//   console.log(newUser);
+
+//   const full = {
+//     email,
+//     newUser,
+//   };
+
+//   fs.readFile("serverAssets/users.json", "utf8", (err, data) => {
+//     if (err && err.code !== "ENOENT") {
+//       return res.status(500).json({ error: "Server error" });
+//     } else {
+//       let users = [];
+//       if (data) {
+//         users = JSON.parse(data);
+//       }
+
+//       //check if email already exists
+//       const existingUser = users.find((user) => user.email === email);
+//       if (existingUser) {
+//         return res.status(400).json({ error: "Email already exists" });
+//       } else {
+//         users.push(full);
+
+//         //save updated users list to json
+//         fs.writeFile("serverAssets/users.json", JSON.stringify(users, null, 2), (err) => {
+//           if (err) {
+//             return res.status(500).json({ error: "Failed to save user" });
+//           } else {
+//             console.log("New user created succsefully");
+//             return res.status(200).json({ success: true });
+//           }
+//         });
+//       }
+//     }
+//   });
+// });
+
+//send account info
+// app.get("/getInfo", (req, res) => {
+//   var { email, password } = req.query;
+//   password = sha256(password);
+
+//   fs.readFile("serverAssets/users.json", "utf8", (err, data) => {
+//     if (err && err.code !== "ENOENT") {
+//       return res.status(500).json({ error: "Server error" });
+//     }
+
+//     let users = [];
+//     if (data) {
+//       users = JSON.parse(data);
+//     }
+
+//     const user = users.find((user) => user.email === email);
+
+//     if (!user) {
+//       return res
+//         .status(400)
+//         .json({ error: "Account does not exist, please create an account" });
+//     }
+
+//     if (user.newUser.password !== password) {
+//       return res.status(400).json({ error: "Incorrect password" });
+//     } else {
+//       const first_name = user.newUser.firstName;
+//       const last_name = user.newUser.lastName;
+
+//       console.log("Account info sent");
+//       return res.send({ first: first_name, last: last_name });
+//     }
+//   });
+// });
+
+//sign in
+// app.post("/signIn", (req, res) => {
+//   var { email, password } = req.body;
+//   password = sha256(password);
+
+//   fs.readFile("serverAssets/users.json", "utf8", (err, data) => {
+//     if (err && err.code !== "ENOENT") {
+//       return res.status(500).json({ error: "Server error" });
+//     }
+
+//     let users = [];
+//     if (data) {
+//       users = JSON.parse(data);
+//     }
+
+//     const user = users.find((user) => user.email === email);
+
+//     if (!user) {
+//       return res
+//         .status(400)
+//         .json({ error: "Account does not exist, please create an account" });
+//     }
+
+//     if (user.newUser.password !== password) {
+//       return res.status(400).json({ error: "Incorrect password" });
+//     }
+
+//     console.log("User sign in succses");
+//     return res.status(200).json({ success: true });
+//   });
+// });
+
+//change info
+// app.post("/changeInfo", (req, res) => {
+//   var { email, password, firstName, lastName, new_email, new_password } =
+//     req.body;
+//   password = sha256(password);
+//   new_password = sha256(new_password);
+
+//   fs.readFile("serverAssets/users.json", "utf8", (err, data) => {
+//     if (err && err.code !== "ENOENT") {
+//       return res.status(500).json({ error: "Server error" });
+//     }
+
+//     let users = [];
+//     if (data) {
+//       users = JSON.parse(data);
+//     }
+
+//     const user = users.find((user) => user.email === email);
+
+//     if ((password = user.newUser.password)) {
+//       user.email = new_email;
+//       user.newUser.firstName = firstName;
+//       user.newUser.lastName = lastName;
+//       user.newUser.email = new_email;
+//       user.newUser.password = new_password;
+
+//       fs.writeFile("serverAssets/users.json", JSON.stringify(users, null, 2), (err) => {
+//         if (err) {
+//           return res.status(500).json({ error: "Failed to save user" });
+//         }
+//       });
+//     }
+//   });
+
+//   console.log("User info changed succsesfully");
+//   return res.status(200).json({ success: true });
+// });
+//------------------------------------------------------------------------------------------------------------------------------
+
+//account creation
 app.post("/createAccount", (req, res) => {
   var { firstName, lastName, email, password } = req.body;
-
+  console.log(req.body);
   password = sha256(password);
 
-  const newUser = {
-    firstName,
-    lastName,
-    email,
-    password,
-  };
-
-  console.log(newUser);
-
-  const full = {
-    email,
-    newUser,
-  };
-
-  fs.readFile("users.json", "utf8", (err, data) => {
-    if (err && err.code !== "ENOENT") {
-      return res.status(500).json({ error: "Server error" });
-    } else {
-      let users = [];
-      if (data) {
-        users = JSON.parse(data);
-      }
-
-      //check if email already exists
-      const existingUser = users.find((user) => user.email === email);
-      if (existingUser) {
-        return res.status(400).json({ error: "Email already exists" });
-      } else {
-        users.push(full);
-
-        //save updated users list to json
-        fs.writeFile("users.json", JSON.stringify(users, null, 2), (err) => {
-          if (err) {
-            return res.status(500).json({ error: "Failed to save user" });
-          } else {
-            console.log("New user created succsefully");
-            return res.status(200).json({ success: true });
-          }
-        });
-      }
+  dbConnection.query(
+    `INSERT INTO users (email, firstName, lastName, password) VALUES ('${email}', '${firstName}', '${lastName}', '${password}')`,
+    function (err, result) {
+      if (err) throw err;
+      return res.status(200).json({ success: true });
     }
-  });
+  );
 });
 
 //sign in
@@ -316,69 +453,70 @@ app.post("/signIn", (req, res) => {
   var { email, password } = req.body;
   password = sha256(password);
 
-  fs.readFile("users.json", "utf8", (err, data) => {
-    if (err && err.code !== "ENOENT") {
-      return res.status(500).json({ error: "Server error" });
+  dbConnection.query(
+    `SELECT * FROM users WHERE email = '${email}'`,
+    function (err, result) {
+      if (err) throw err;
+
+      if (result.length > 0) {
+        if (result[0].password != password) {
+          return res.status(400).json({ error: "Incorrect password" });
+        }
+        return res.status(200).json({ success: true });
+      } else {
+        return res
+          .status(400)
+          .json({ error: "Account does not exist, please create an account" });
+      }
     }
-
-    let users = [];
-    if (data) {
-      users = JSON.parse(data);
-    }
-
-    const user = users.find((user) => user.email === email);
-
-    if (!user) {
-      return res
-        .status(400)
-        .json({ error: "Account does not exist, please create an account" });
-    }
-
-    if (user.newUser.password !== password) {
-      return res.status(400).json({ error: "Incorrect password" });
-    }
-
-    console.log("User sign in succses");
-    return res.status(200).json({ success: true });
-  });
+  );
 });
 
-//change info
+//change account info
 app.post("/changeInfo", (req, res) => {
   var { email, password, firstName, lastName, new_email, new_password } =
     req.body;
   password = sha256(password);
   new_password = sha256(new_password);
 
-  fs.readFile("users.json", "utf8", (err, data) => {
-    if (err && err.code !== "ENOENT") {
-      return res.status(500).json({ error: "Server error" });
-    }
+  dbConnection.query(
+    `SELECT * FROM users WHERE email = '${email}'`,
+    function (err, result) {
+      if (err) throw err;
 
-    let users = [];
-    if (data) {
-      users = JSON.parse(data);
-    }
-
-    const user = users.find((user) => user.email === email);
-
-    if ((password = user.newUser.password)) {
-      user.email = new_email;
-      user.newUser.firstName = firstName;
-      user.newUser.lastName = lastName;
-      user.newUser.email = new_email;
-      user.newUser.password = new_password;
-
-      fs.writeFile("users.json", JSON.stringify(users, null, 2), (err) => {
-        if (err) {
-          return res.status(500).json({ error: "Failed to save user" });
+      if (result.length > 0) {
+        if (result[0].password != password) {
+          return res.status(400).json({ error: "Incorrect password" });
         }
-      });
-    }
-  });
 
-  console.log("User info changed succsesfully");
-  return res.status(200).json({ success: true });
+        var query = ``;
+
+        if (firstName != result[0].firstName) {
+          query += `update users set firstName = "${firstName}" where email = "${email}"`;
+        }
+
+        if (lastName != result[0].lastName) {
+          query += `update users set lastName = "${lastName}" where email = "${email}"`;
+        }
+
+        if (new_password != result[0].password) {
+          query += `update users set password = "${new_password}" where email = "${email}"`;
+        }
+
+        dbConnection.query(query);
+
+        if (new_email != result[0].email) {
+          dbConnection.query(
+            `update users set email = "${new_email}" where email = "${email}"`
+          );
+        }
+      } else {
+        return res
+          .status(400)
+          .json({ error: "Account does not exist, please create an account" });
+      }
+    }
+  );
 });
 
 //send account info
@@ -386,34 +524,26 @@ app.get("/getInfo", (req, res) => {
   var { email, password } = req.query;
   password = sha256(password);
 
-  fs.readFile("users.json", "utf8", (err, data) => {
-    if (err && err.code !== "ENOENT") {
-      return res.status(500).json({ error: "Server error" });
+  dbConnection.query(
+    `SELECT * FROM users WHERE email = '${email}'`,
+    function (err, result) {
+      if (err) throw err;
+
+      if (result.length > 0) {
+        if (result[0].password != password) {
+          return res.status(400).json({ error: "Incorrect password" });
+        }
+        const firstName = result[0].firstName;
+        const lastName = result[0].lastName;
+        console.log("Account info sent");
+        return res.send({ first: firstName, last: lastName });
+      } else {
+        return res
+          .status(400)
+          .json({ error: "Account does not exist, please create an account" });
+      }
     }
-
-    let users = [];
-    if (data) {
-      users = JSON.parse(data);
-    }
-
-    const user = users.find((user) => user.email === email);
-
-    if (!user) {
-      return res
-        .status(400)
-        .json({ error: "Account does not exist, please create an account" });
-    }
-
-    if (user.newUser.password !== password) {
-      return res.status(400).json({ error: "Incorrect password" });
-    } else {
-      const first_name = user.newUser.firstName;
-      const last_name = user.newUser.lastName;
-
-      console.log("Account info sent");
-      return res.send({ first: first_name, last: last_name });
-    }
-  });
+  );
 });
 
 io.on("connection", (socket) => {
@@ -562,7 +692,9 @@ io.on("connection", (socket) => {
         });
 
         pythonProcess.stderr.on("data", (data) => {
-          io.to(socket.id).emit("ranData", data.toString());
+          let toSend = data.toString();
+          const split = toSend.split("/Users/1002562/Desktop/codeSync/temp/");
+          io.to(socket.id).emit("ranData", split);
         });
 
         socket.on("userInput", (input) => {
@@ -644,7 +776,9 @@ io.on("connection", (socket) => {
 process.stdin.on("data", (data) => {
   const command = data.toString().trim();
   if (command == "help") {
-    console.log("Commands:\n- stop\n- close-{code}\n- display-{code}\n- codes");
+    console.log(
+      "Commands:\n- stop\n- close-{code}\n- display-{code}\n- codes\n- q$(query)"
+    );
   } else if (command == "stop") {
     console.log("Stopping the process...");
     process.exit(0);
@@ -672,12 +806,35 @@ process.stdin.on("data", (data) => {
     for (let i = 0; i < codes.length; i++) {
       console.log(`- ${codes[i]}`);
     }
+  } else if (command.split("$")[0] == "q") {
+    dbConnection.query(command.split("$")[1], function (err, result) {
+      if (err) throw err;
+
+      console.log(result);
+    });
   } else {
     console.log("Command not recognized:", command);
     console.log("Try: help");
   }
 });
 
-server.listen(port, ip, () => {
-  console.log(`Server is running on ${protocal}://${ip}:${port}`);
+const dbConnection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
+});
+
+dbConnection.connect((err) => {
+  if (err) {
+    console.log("DB could't connect, stopping server to avoid issues.");
+    process.exit(0);
+  } else {
+    console.log("DB connected");
+
+    server.listen(port, ip, () => {
+      console.log(`Server is running on ${protocal}://${ip}:${port}`);
+    });
+  }
 });
