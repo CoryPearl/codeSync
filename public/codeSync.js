@@ -517,6 +517,7 @@ function addTextAreaKeys(name, lineNumberName) {
       const newCaretPosition = cursorPos + 1 + indentation.length;
       textarea.setSelectionRange(newCaretPosition, newCaretPosition);
 
+      sendData();
       updateLines(name, lineNumberName);
     } else if (e.key === "(") {
       e.preventDefault();

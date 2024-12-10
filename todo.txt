@@ -1,19 +1,11 @@
 TODO:
-- scroll is weird
-- needs to update when return key is hit somehow
+- remove auto login when done
+- share link
 
+Gay TODO:
 - js dosn't work for html/css/js
 - html/css/js boxes need top padding, maybe 5px
 - highlighting for html css js
 
-- remove auto login when done
 
----------------------------------------------------------------
-
-Sorces:
-- chat gpt
-- w3schools
-- google ai for simple syntax questions
-- stack overflow
-- socketio.js from (c) 2014-2023 Guillermo Rauch
-- highlight js from 2006-2022 Ivan Sagalaev and other contributors
+ssh -i "code-sync.pem" ubuntu@ec2-44-220-95-15.compute-1.amazonaws.com

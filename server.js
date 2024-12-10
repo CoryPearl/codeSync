@@ -2,7 +2,6 @@
 const express = require("express");
 const fs = require("fs");
 const { createHash } = require("crypto");
-const http = require("http");
 const https = require("https");
 const { Server } = require("socket.io");
 const nodemailer = require("nodemailer");
@@ -12,7 +11,6 @@ const mysql = require("mysql2");
 require("dotenv").config({ path: "serverAssets/.env" });
 
 const protocal = "https";
-//const protocal = "http";
 const port = 8443;
 const ip = "10.34.7.111";
 // const ip = "192.168.86.155";
@@ -27,7 +25,6 @@ const options = {
 //app creation, https server creation, and io creation in the server
 const app = express();
 const server = https.createServer(options, app);
-//const server = http.createServer(app);
 const io = new Server(server);
 
 var rooms = {};
@@ -139,35 +136,6 @@ app.post("/send2fa", (req, res) => {
   return res.status(200).json({ success: true });
 });
 
-//check 2fa code for users.json
-// app.post("/check2fa", (req, res) => {
-//   var { authCode, email } = req.body;
-
-//   fs.readFile("serverAssets/users.json", "utf8", (err, data) => {
-//     if (err && err.code !== "ENOENT") {
-//       return res.status(500).json({ error: "Server error" });
-//     } else {
-//       let users = [];
-//       if (data) {
-//         users = JSON.parse(data);
-//       }
-
-//       //check if email already exists
-//       const existingUser = users.find((user) => user.email === email);
-//       if (existingUser) {
-//         return res.status(400).json({ error: "Email already exists" });
-//       } else {
-//         if (authCodes[authCode] && authCodes[authCode].email == email) {
-//           delete authCodes[authCode];
-//           return res.status(200).json({ success: true });
-//         } else {
-//           return res.status(200).json({ success: false });
-//         }
-//       }
-//     }
-//   });
-// });
-
 //check 2fa validation
 app.post("/check2fa", (req, res) => {
   var { authCode, email } = req.body;
@@ -256,7 +224,7 @@ app.post("/deleteRoom", (req, res) => {
 
 //join codesync
 app.post("/joinCodeSync", (req, res) => {
-  var { code, password, firstfName, lastName } = req.body;
+  var { code, password, firstName, lastName } = req.body;
 
   var roomFound = false;
   if (rooms[code]) {
@@ -277,6 +245,35 @@ app.post("/joinCodeSync", (req, res) => {
 
 //OLD ACCOUNT CODE, KEEPING JUST IN CASE
 //------------------------------------------------------------------------------------------------------------------------------
+//check 2fa code for users.json
+// app.post("/check2fa", (req, res) => {
+//   var { authCode, email } = req.body;
+
+//   fs.readFile("serverAssets/users.json", "utf8", (err, data) => {
+//     if (err && err.code !== "ENOENT") {
+//       return res.status(500).json({ error: "Server error" });
+//     } else {
+//       let users = [];
+//       if (data) {
+//         users = JSON.parse(data);
+//       }
+
+//       //check if email already exists
+//       const existingUser = users.find((user) => user.email === email);
+//       if (existingUser) {
+//         return res.status(400).json({ error: "Email already exists" });
+//       } else {
+//         if (authCodes[authCode] && authCodes[authCode].email == email) {
+//           delete authCodes[authCode];
+//           return res.status(200).json({ success: true });
+//         } else {
+//           return res.status(200).json({ success: false });
+//         }
+//       }
+//     }
+//   });
+// });
+
 //create account
 // app.post("/createAccount", (req, res) => {
 //   var { firstName, lastName, email, password } = req.body;
