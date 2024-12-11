@@ -3,6 +3,7 @@ const express = require("express");
 const fs = require("fs");
 const { createHash } = require("crypto");
 const https = require("https");
+const http = require("http");
 const { Server } = require("socket.io");
 const nodemailer = require("nodemailer");
 const handlebars = require("handlebars");
@@ -10,9 +11,9 @@ const { spawn } = require("child_process");
 const mysql = require("mysql2");
 require("dotenv").config({ path: "serverAssets/.env" });
 
-const protocal = "https";
-const port = 8443;
-const ip = "10.34.7.111";
+const protocal = "http";
+const port = 3000;
+// const ip = "10.34.7.111";
 // const ip = "192.168.86.155";
 // const ip = "192.168.86.168";
 
@@ -24,7 +25,7 @@ const options = {
 
 //app creation, https server creation, and io creation in the server
 const app = express();
-const server = https.createServer(options, app);
+const server = http.createServer(app);
 const io = new Server(server);
 
 var rooms = {};
@@ -830,8 +831,8 @@ dbConnection.connect((err) => {
   } else {
     console.log("DB connected");
 
-    server.listen(port, ip, () => {
-      console.log(`Server is running on ${protocal}://${ip}:${port}`);
+    server.listen(port, () => {
+      console.log(`Server is running on ${protocal}://localhost:${port}`);
     });
   }
 });

@@ -8,4 +8,4 @@ Gay TODO:
 - highlighting for html css js
 
 
-ssh -i "code-sync.pem" ubuntu@ec2-44-220-95-15.compute-1.amazonaws.com
+ssh -i "code-sync2.pem" ubuntu@ec2-54-197-203-130.compute-1.amazonaws.com
