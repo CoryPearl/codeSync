@@ -1,6 +1,5 @@
 TODO:
-- remove auto login when done
-- share link
+- Remove Tab login
 
 Gay TODO:
 - js dosn't work for html/css/js

@@ -20,24 +20,13 @@
   <body>
     <nav>
       <div id="left">
+        <img src="assets/link.png" style="width:35px; cursor: pointer;" onclick="copyLink()">
         <h1 id="codeDisplay">Code:</h1>
-        <h1 id="langDisplay">Language:</h1>
-        <div id="chatControls">
-          <p>Voice Chat Controls:</p>
-          <div>
-            <button id="startChat" style="cursor: pointer">Start Chat</button>
-            <button id="stopChat" style="cursor: pointer" disabled>
-              Stop Chat
-            </button>
-            <button id="muteUnmute" style="cursor: pointer" disabled>
-              Mute
-            </button>
-          </div>
-        </div>
+        <h1 id="passwordDisplay">Password:</h1>
       </div>
       <div id="right">
         <button id="leaveButton">Leave</button>
-        <h1 id="passwordDisplay">Password:</h1>
+        <h1 id="langDisplay">Language:</h1>
       </div>
     </nav>
     <div id="header">
@@ -49,7 +38,7 @@
       </div>
       <div id="right">
         <h2>Output:</h2>
-        <p id="directions" style="font-size: 15px;">- To send input type a "/" before your message in the chat -</p>
+        <p id="directions" style="font-size: 0.8vw;">- To send input type a "/" before your message in the chat -</p>
         <div id="runDiv">
           <label for="checkbox" style="display: none" id="autoRunLabel"
             >Auto Run</label
@@ -95,6 +84,18 @@
     <div id="header2">
       <div id="left">
         <h2>Chat:</h2>
+        <div id="chatControls">
+          <p style="margin-right: 10px;">Voice Chat Controls:</p>
+          <div>
+            <button id="startChat" style="cursor: pointer">Start Chat</button>
+            <button id="stopChat" style="cursor: pointer" disabled>
+              Stop Chat
+            </button>
+            <button id="muteUnmute" style="cursor: pointer" disabled>
+              Mute
+            </button>
+          </div>
+        </div>
       </div>
       <div id="right">
         <h2>Connected Users:</h2>

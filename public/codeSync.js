@@ -172,6 +172,21 @@ function clearOutput() {
   document.getElementById("output").value = "";
 }
 
+function copyLink() {
+  navigator.clipboard
+    .writeText(
+      `https://codesync.click/joinCodeSyncByLink?code=${code}&password=${password}`
+    )
+    .then(() => {
+      console.log("Text copied to clipboard");
+    })
+    .catch((err) => {
+      console.error("Failed to copy: ", err);
+    });
+
+  alert("Linked copied to clipboard!");
+}
+
 function command(command) {
   socket.emit("userInput", command);
 

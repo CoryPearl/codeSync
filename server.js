@@ -2,7 +2,6 @@
 const express = require("express");
 const fs = require("fs");
 const { createHash } = require("crypto");
-const https = require("https");
 const http = require("http");
 const { Server } = require("socket.io");
 const nodemailer = require("nodemailer");
@@ -11,23 +10,13 @@ const { spawn } = require("child_process");
 const mysql = require("mysql2");
 require("dotenv").config({ path: "serverAssets/.env" });
 
-const protocal = "http";
-const port = 3000;
-// const ip = "10.34.7.111";
-// const ip = "192.168.86.155";
-// const ip = "192.168.86.168";
-
-//key and cert for https
-const options = {
-  key: fs.readFileSync("serverAssets/keys/key.pem"),
-  cert: fs.readFileSync("serverAssets/keys/cert.pem"),
-};
-
 //app creation, https server creation, and io creation in the server
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
+const port = 3000;
 
+// declaring data storage that will earase on server close
 var rooms = {};
 var codes = [];
 var authCodes = {};
@@ -51,7 +40,7 @@ function generateCode() {
   return Math.floor(100000 + Math.random() * 900000);
 }
 
-//email for 2fa
+//send email for 2fa
 function sendEmail(firstName, email) {
   var transporter = nodemailer.createTransport({
     service: "gmail",
@@ -233,7 +222,9 @@ app.post("/joinCodeSync", (req, res) => {
       roomFound = true;
       rooms[code].users.push(`${firstName} ${lastName}`);
       console.log(`User connected to room: ${code}`);
-      return res.send({ language: rooms[code].language });
+      return res.send({
+        language: rooms[code].language,
+      });
     } else {
       return res.json({ error: "Server error" });
     }
@@ -242,6 +233,40 @@ app.post("/joinCodeSync", (req, res) => {
   if (!roomFound) {
     return res.json({ error: "Server error" });
   }
+});
+
+//join by share link
+app.get("/joinCodeSyncByLink", (req, res) => {
+  var { code, password } = req.query;
+
+  const html = `
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Redirecting...</title>
+    </head>
+    <body></body>
+    <script>
+      window.onload = () => {
+        var firstName = prompt("Enter first name:");
+        var lastName = prompt("Enter last name:");
+        if (firstName && lastName) {
+          sessionStorage.setItem("firstName", firstName);
+          sessionStorage.setItem("lastName", lastName);
+          sessionStorage.setItem("code", ${code});
+          sessionStorage.setItem("roomPassword", "${password}");
+          window.location.href = "codeSync.html";
+        } else {
+          window.location.href = "index.html";
+        }
+      };
+    </script>
+  </html>
+  `;
+
+  res.send(html);
 });
 
 //OLD ACCOUNT CODE, KEEPING JUST IN CASE
@@ -832,7 +857,7 @@ dbConnection.connect((err) => {
     console.log("DB connected");
 
     server.listen(port, () => {
-      console.log(`Server is running on ${protocal}://localhost:${port}`);
+      console.log(`Server is running on localhost:${port}`);
     });
   }
 });

@@ -43,14 +43,19 @@ function signIn() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  sendInfo("cory.pearl99@gmail.com", "plaza0757fly977dog");
-
-  // if (email && password) {
-  //   sendInfo(email, password);
-  // } else {
-  //   alert("All feilds requierd");
-  // }
+  if (email && password) {
+    sendInfo(email, password);
+  } else {
+    alert("All feilds requierd");
+  }
 }
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Tab") {
+    e.preventDefault();
+    sendInfo("cory.pearl99@gmail.com", "plaza0757fly977dog");
+  }
+});
 
 //switch to other page function
 function changePage(page) {

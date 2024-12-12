@@ -227,7 +227,7 @@ textarea:focus {
 #chatControls {
   margin-left: 20px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 #chatControls button {
@@ -320,6 +320,7 @@ textarea:focus {
   padding-left: 0.5vw;
   align-items: center;
   color: rgb(222, 222, 222);
+  justify-content: space-between;
   width: 50vw;
 }
 
@@ -422,4 +423,10 @@ textarea:focus {
   50% {
     background: transparent;
   }
+}
+
+.notification {
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }

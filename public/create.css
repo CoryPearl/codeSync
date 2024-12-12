@@ -280,7 +280,7 @@ input::placeholder {
   padding: 10px;
   border-radius: 25px;
   border: none;
-  margin-top: 20px;
+  margin-top: 4%;
   width: 50%;
   color: white;
   font-size: 25px;
@@ -297,7 +297,7 @@ input::placeholder {
 #lang {
   width: 50%;
   border: none;
-  height: 40px;
+  height: 10%;
   padding: 5px;
   border-radius: 10px;
 }
@@ -306,10 +306,11 @@ input::placeholder {
   text-align: center;
   border: none;
   width: 60%;
+  height: 10%;
   padding: 10px;
   border-radius: 25px;
   font-size: 30px;
-  margin-bottom: 20px;
+  margin-bottom: 4%;
 }
 
 #roomPassword::placeholder {
