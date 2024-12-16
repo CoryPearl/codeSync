@@ -8,3 +8,4 @@ Gay TODO:
 
 
 ssh -i "code-sync2.pem" ubuntu@ec2-54-197-203-130.compute-1.amazonaws.com
+scp -i "code-sync2.pem" ./Desktop/codeSync/serverAssets/.env ubuntu@ec2-54-197-203-130.compute-1.amazonaws.com:/home/ubuntu/codeSync/serverAssets

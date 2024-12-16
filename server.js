@@ -26,8 +26,8 @@ app.use(express.json());
 app.use(express.static("public"));
 
 //creating temp folder to store running files
-if (!fs.existsSync("temp")) {
-  fs.mkdirSync("temp");
+if (!fs.existsSync("./temp")) {
+  fs.mkdirSync("./temp");
 }
 
 //return hashed value
@@ -841,6 +841,7 @@ process.stdin.on("data", (data) => {
   }
 });
 
+//Create connection to database
 const dbConnection = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -849,6 +850,7 @@ const dbConnection = mysql.createConnection({
   port: process.env.DB_PORT,
 });
 
+//Check if database connection is secure then start server
 dbConnection.connect((err) => {
   if (err) {
     console.log("DB could't connect, stopping server to avoid issues.");
