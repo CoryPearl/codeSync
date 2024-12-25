@@ -166,6 +166,8 @@ socket.on("reciveChat", (data) => {
 //output data recived after running code
 socket.on("ranData", (data) => {
   document.getElementById("output").value += data + "\n";
+  document.getElementById("output").scrollTop =
+    document.getElementById("output").scrollHeight;
 });
 
 function clearOutput() {

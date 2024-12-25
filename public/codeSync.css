@@ -424,9 +424,3 @@ textarea:focus {
     background: transparent;
   }
 }
-
-.notification {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-}

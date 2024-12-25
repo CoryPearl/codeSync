@@ -10,7 +10,7 @@ const { spawn } = require("child_process");
 const mysql = require("mysql2");
 require("dotenv").config({ path: "serverAssets/.env" });
 
-//app creation, https server creation, and io creation in the server
+//initating react, starting http server, starting socket server
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
@@ -43,10 +43,12 @@ function generateCode() {
 //send email for 2fa
 function sendEmail(firstName, email) {
   var transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+    secure: false,
     auth: {
-      user: "cory.pearl99@gmail.com",
-      pass: "zsth skbg zvma fwhe",
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD,
     },
   });
 
@@ -69,9 +71,9 @@ function sendEmail(firstName, email) {
   const htmlToSend = template(replacements);
 
   var mailOptions = {
-    from: "cory.pearl99@gmail.com",
+    from: "verification@codesync.click",
     to: email,
-    subject: "CodeSync Varifacation",
+    subject: "CodeSync Verification",
     html: htmlToSend,
     attachments: [
       {
