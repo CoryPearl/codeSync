@@ -60,7 +60,7 @@ function sendEmail(firstName, email) {
   authCodes[code] = { time: 60, email: email };
 
   const source = fs
-    .readFileSync("serverAssets/emailtemplate.html", "utf-8")
+    .readFileSync("serverAssets/emailTemplate.html", "utf-8")
     .toString();
 
   const template = handlebars.compile(source);

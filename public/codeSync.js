@@ -32,6 +32,7 @@ fetch("/joinCodeSync", {
       alert(data.error);
     } else {
       sessionStorage.setItem("language", data.language);
+      console.log(sessionStorage.getItem("language"));
     }
   })
   .catch((error) => {
