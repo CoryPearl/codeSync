@@ -66,8 +66,8 @@ window.onload = async () => {
   const name = `${sessionStorage.getItem("firstName")} ${sessionStorage.getItem(
     "lastName"
   )}`;
-  const password = sessionStorage.getItem("password");
-  socket.emit("checkOwner", { name, password, code });
+  const passwordSend = sessionStorage.getItem("password");
+  socket.emit("checkOwner", { name, passwordSend, code });
 
   addEventListeners();
 };
