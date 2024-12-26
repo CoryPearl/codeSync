@@ -203,6 +203,26 @@ body {
   scale: 1.1;
 }
 
+#joinByLinkButton {
+  font-family: Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 25px;
+  border: none;
+  margin-top: 4%;
+  width: 40%;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.45);
+  background-color: rgb(28, 66, 138);
+  transition: scale 0.8s;
+}
+
+#joinByLinkButton:hover {
+  scale: 1.1;
+}
+
 #buttons {
   display: flex;
   padding-right: 15px;

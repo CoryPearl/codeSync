@@ -183,6 +183,13 @@ function join() {
   }
 }
 
+function joinByLink() {
+  const link = prompt("Enter the join link:");
+  if (link != null) {
+    window.location.href = link;
+  }
+}
+
 //logout of website
 function logOut() {
   sessionStorage.clear();
