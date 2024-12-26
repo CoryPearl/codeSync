@@ -1,9 +1,9 @@
 //declaring a few variables
 const socket = io();
-var code;
-var password;
-var firstName;
-var lastName;
+// var code;
+// var password;
+// var firstName;
+// var lastName;
 var owner = false;
 var focusStatus = "code";
 var localCursorPos = 0;
@@ -16,10 +16,10 @@ let isMuted = false;
 let ableToRun = true;
 
 window.onload = async () => {
-  code = sessionStorage.getItem("code");
-  password = sessionStorage.getItem("roomPassword");
-  firstName = sessionStorage.getItem("firstName");
-  lastName = sessionStorage.getItem("lastName");
+  var code = sessionStorage.getItem("code");
+  var password = sessionStorage.getItem("roomPassword");
+  var firstName = sessionStorage.getItem("firstName");
+  var lastName = sessionStorage.getItem("lastName");
   //join the code sync when page load
   await fetch("/joinCodeSync", {
     method: "POST",
