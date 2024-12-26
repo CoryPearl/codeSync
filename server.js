@@ -253,7 +253,7 @@ app.get("/joinCodeSyncByLink", (req, res) => {
   <script>
     window.onload = () => {
       if (
-        sessionStorage.getItem("firstName") != ""
+        sessionStorage.getItem("firstName") != null
       ) {
         sessionStorage.setItem("code", ${code});
         sessionStorage.setItem("roomPassword", "${password}");
