@@ -243,29 +243,38 @@ app.get("/joinCodeSyncByLink", (req, res) => {
 
   const html = `
   <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Redirecting...</title>
-    </head>
-    <body></body>
-    <script>
-      window.onload = () => {
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting...</title>
+  </head>
+  <body></body>
+  <script>
+    window.onload = () => {
+      if (
+        sessionStorage.getItem("firstName") &&
+        sessionStorage.getItem("lastName")
+      ) {
+        sessionStorage.setItem("code", ${code});
+        sessionStorage.setItem("roomPassword", "${password}");
+        window.location.href = "codeSync.html";
+      } else {
         var firstName = prompt("Enter first name:");
         var lastName = prompt("Enter last name:");
         if (firstName && lastName) {
           sessionStorage.setItem("firstName", firstName);
           sessionStorage.setItem("lastName", lastName);
-          sessionStorage.setItem("code", ${code});
+            sessionStorage.setItem("code", ${code});
           sessionStorage.setItem("roomPassword", "${password}");
           window.location.href = "codeSync.html";
         } else {
           window.location.href = "index.html";
         }
-      };
-    </script>
-  </html>
+      }
+    };
+  </script>
+</html>
   `;
 
   res.send(html);

@@ -15,32 +15,32 @@ const roomId = "voice-chat-room";
 let isMuted = false;
 let ableToRun = true;
 
-//join the code sync when page load
-fetch("/joinCodeSync", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    code,
-    password,
-    firstName,
-    lastName,
-  }),
-})
-  .then((response) => response.json())
-  .then((data) => {
-    if (data.error) {
-      alert(data.error);
-    } else {
-      sessionStorage.setItem("language", data.language);
-      setHighlight();
-    }
+window.onload = async () => {
+  //join the code sync when page load
+  await fetch("/joinCodeSync", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      code,
+      password,
+      firstName,
+      lastName,
+    }),
   })
-  .catch((error) => {
-    alert("An error occurred while joining CodeSync");
-    console.error("Error:", error.message);
-  });
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.error) {
+        alert(data.error);
+      } else {
+        sessionStorage.setItem("language", data.language);
+        setHighlight();
+      }
+    })
+    .catch((error) => {
+      alert("An error occurred while joining CodeSync");
+      console.error("Error:", error.message);
+    });
 
-window.onload = () => {
   //update codeing space, eventlistners, and output if the room is html/css/js
   checkHtml();
   updateSizes();
