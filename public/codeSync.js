@@ -1,9 +1,5 @@
 //declaring a few variables
 const socket = io();
-// var code;
-// var password;
-// var firstName;
-// var lastName;
 var owner = false;
 var focusStatus = "code";
 var localCursorPos = 0;
@@ -17,7 +13,7 @@ let ableToRun = true;
 
 window.onload = () => {
   var code = sessionStorage.getItem("code");
-  var password = sessionStorage.getItem("roomPassword");
+  var roomPassword = sessionStorage.getItem("roomPassword");
   var firstName = sessionStorage.getItem("firstName");
   var lastName = sessionStorage.getItem("lastName");
   //join the code sync when page load
@@ -26,7 +22,7 @@ window.onload = () => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       code,
-      password,
+      roomPassword,
       firstName,
       lastName,
     }),
@@ -60,8 +56,8 @@ window.onload = () => {
         const name = `${sessionStorage.getItem(
           "firstName"
         )} ${sessionStorage.getItem("lastName")}`;
-        const passwordSend = sessionStorage.getItem("password");
-        socket.emit("checkOwner", { name, passwordSend, code });
+        const password = sessionStorage.getItem("password");
+        socket.emit("checkOwner", { name, password, code });
 
         addEventListeners();
       }
@@ -708,18 +704,18 @@ function leave() {
   if (owner) {
     let confirm = prompt("Confirm close (y or n)?");
     if (confirm) {
-      let passwordToSend = sessionStorage.getItem("password");
-      let code = sessionStorage.getItem("code");
+      var password = sessionStorage.getItem("password");
+      var code = sessionStorage.getItem("code");
       sessionStorage.removeItem("code");
       sessionStorage.removeItem("language");
       sessionStorage.removeItem("roomPassword");
 
-      socket.emit("close", { code, passwordToSend });
+      socket.emit("close", { code, password });
 
       fetch("/deleteRoom", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code, passwordToSend }),
+        body: JSON.stringify({ code, password }),
       })
         .then((response) => response.json())
         .then((data) => {
