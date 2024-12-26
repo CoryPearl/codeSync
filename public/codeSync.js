@@ -1,5 +1,9 @@
 //declaring a few variables
 const socket = io();
+var code = sessionStorage.getItem("code");
+var roomPassword = sessionStorage.getItem("roomPassword");
+var firstName = sessionStorage.getItem("firstName");
+var lastName = sessionStorage.getItem("lastName");
 var owner = false;
 var focusStatus = "code";
 var localCursorPos = 0;
@@ -12,17 +16,14 @@ let isMuted = false;
 let ableToRun = true;
 
 window.onload = () => {
-  var code = sessionStorage.getItem("code");
-  var roomPassword = sessionStorage.getItem("roomPassword");
-  var firstName = sessionStorage.getItem("firstName");
-  var lastName = sessionStorage.getItem("lastName");
+  let roomPasswordOnLoad = sessionStorage.getItem("roomPassword");
   //join the code sync when page load
   fetch("/joinCodeSync", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       code,
-      roomPassword,
+      roomPasswordOnLoad,
       firstName,
       lastName,
     }),
