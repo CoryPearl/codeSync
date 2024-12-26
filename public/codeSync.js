@@ -32,6 +32,9 @@ fetch("/joinCodeSync", {
       alert(data.error);
     } else {
       sessionStorage.setItem("language", data.language);
+      document.getElementById(
+        "langDisplay"
+      ).innerHTML = `Language: ${sessionStorage.getItem("language")}`;
       setHighlight();
     }
   })
