@@ -42,31 +42,28 @@ function generateCode() {
 
 //send email for 2fa
 function sendEmail(firstName, email) {
-  //   var transporter = nodemailer.createTransport({
-  //     host: process.env.EMAIL_HOST,
-  //     port: process.env.EMAIL_PORT,
-  //     secure: false,
-  //     auth: {
-  //       user: process.env.EMAIL_USER,
-  //       pass: process.env.EMAIL_PASSWORD,
-  //     },
-  //   });
-
+  //telling nodemailer what mail service to use
   var transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+    secure: false,
     auth: {
-      user: "cory.pearl99@gmail.com",
-      pass: "zsth skbg zvma fwhe",
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD,
     },
   });
 
+  //generateing 2fa code to send to user
   var code = generateCode();
   if (rooms[code] || authCodes[code]) {
     code = generateCode();
   }
 
+  //creating countdown for code till expire
   authCodes[code] = { time: 60, email: email };
 
+  //-------------------
+  //loading email template and adding variables like code and name
   const source = fs
     .readFileSync("serverAssets/emailTemplate.html", "utf-8")
     .toString();
@@ -77,7 +74,9 @@ function sendEmail(firstName, email) {
     firstName: firstName,
   };
   const htmlToSend = template(replacements);
+  //-------------------
 
+  //telling nodemailer who to email from, who to email to and what to email
   var mailOptions = {
     from: "verification@codesync.click",
     to: email,
@@ -92,6 +91,7 @@ function sendEmail(firstName, email) {
     ],
   };
 
+  //sending email and logging result
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.log(error);
@@ -153,12 +153,14 @@ app.post("/createCodeSync", (req, res) => {
   var { password, language, owner, ownerPassword } = req.body;
   ownerPassword = sha256(ownerPassword);
 
+  //generateing 6 didget room code
   var code = generateCode();
   if (rooms[code]) {
     code = generateCode();
   }
   codes.push(code);
 
+  //creating room based on lnaguage, html/css/js needs more data space
   if (language == "html/css/js") {
     var new_room = {
       owner: owner,
@@ -187,6 +189,7 @@ app.post("/createCodeSync", (req, res) => {
     };
   }
 
+  //adding starter code to room depending on the language
   if (new_room.language == "Python") {
     new_room.data = `print("Hello World")`;
   } else if (new_room.language == "Java") {
@@ -196,6 +199,8 @@ app.post("/createCodeSync", (req, res) => {
   } else if (new_room.language == "html/css/js") {
     new_room.data.html = `<!DOCTYPE html>\n<html lang="en">\n\t<head>\n\t\t<meta charset="UTF-8" />\n\t\t<meta name="viewport" content="width=device-width, initial-scale=1.0" />\n\t\t<title>Hello World</title>\n\t</head>\n\t<body>\n\t\t<h1>Hello World!</h1>\n\t</body>\n</html>`;
   }
+
+  //adding room to storage
   rooms[code] = new_room;
 
   console.log(
@@ -213,6 +218,7 @@ app.post("/deleteRoom", (req, res) => {
   password = sha256(password);
 
   if (rooms[code]) {
+    //making sure its owner whos deleteing room then dleteing all data about the room
     if (rooms[code].ownerPassword == password) {
       delete rooms[code];
       delete codes.indexOf(code);
@@ -226,10 +232,11 @@ app.post("/deleteRoom", (req, res) => {
 app.post("/joinCodeSync", (req, res) => {
   var { code, password, firstName, lastName } = req.body;
 
-  var roomFound = false;
+  //making sure room exists first
   if (rooms[code]) {
+    //checking if room password is valid
     if (rooms[code].password == password) {
-      roomFound = true;
+      //adding user to room and sending back language
       rooms[code].users.push(`${firstName} ${lastName}`);
       console.log(`User connected to room: ${code}`);
       return res.send({
@@ -249,6 +256,7 @@ app.post("/joinCodeSync", (req, res) => {
 app.get("/joinCodeSyncByLink", (req, res) => {
   var { code, password } = req.query;
 
+  //page to give to make sure they are either logged in or input a name, then redirects to codesync
   const html = `
   <!DOCTYPE html>
 <html lang="en">
@@ -287,7 +295,7 @@ app.get("/joinCodeSyncByLink", (req, res) => {
   res.send(html);
 });
 
-//OLD ACCOUNT CODE, KEEPING JUST IN CASE
+//OLD ACCOUNT CODE WITH JSON, KEEPING JUST IN CASE
 //------------------------------------------------------------------------------------------------------------------------------
 //check 2fa code for users.json
 // app.post("/check2fa", (req, res) => {
@@ -480,6 +488,7 @@ app.post("/createAccount", (req, res) => {
   console.log(req.body);
   password = sha256(password);
 
+  //sending sql query to add user info to database then sending back result
   dbConnection.query(
     `INSERT INTO users (email, firstName, lastName, password) VALUES ('${email}', '${firstName}', '${lastName}', '${password}')`,
     function (err, result) {
@@ -494,6 +503,7 @@ app.post("/signIn", (req, res) => {
   var { email, password } = req.body;
   password = sha256(password);
 
+  //checking if account exists and checking if credentials are correct then sending back result
   dbConnection.query(
     `SELECT * FROM users WHERE email = '${email}'`,
     function (err, result) {
@@ -520,6 +530,7 @@ app.post("/changeInfo", (req, res) => {
   password = sha256(password);
   new_password = sha256(new_password);
 
+  //making query to database to change any info the user wanted to change only if passowrds match
   dbConnection.query(
     `SELECT * FROM users WHERE email = '${email}'`,
     function (err, result) {
@@ -565,6 +576,7 @@ app.get("/getInfo", (req, res) => {
   var { email, password } = req.query;
   password = sha256(password);
 
+  //sending account info to client to display name on screen and use for joining codesync
   dbConnection.query(
     `SELECT * FROM users WHERE email = '${email}'`,
     function (err, result) {
@@ -587,6 +599,7 @@ app.get("/getInfo", (req, res) => {
   );
 });
 
+//socketIo for all the room things
 io.on("connection", (socket) => {
   //initiate connection
   socket.on("connectSocket", ({ code }) => {
@@ -595,6 +608,7 @@ io.on("connection", (socket) => {
         rooms[code].socketIDs.push(socket.id);
       }
 
+      //sneding basic info to user on connection
       rooms[code].socketIDs.forEach((socketId) => {
         io.to(socketId).emit("updateUsers", [rooms[code].users]);
         if (rooms[code].language == "html/css/js") {
@@ -614,7 +628,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  //send room data to client
+  //send room data to client, keeps clients screens updated
   socket.on("getRoomData", ({ code }) => {
     if (rooms[code]) {
       if (rooms[code].language == "html/css/js") {
@@ -633,7 +647,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  // Save room data (from a user)
+  // Save room data (from a user), then send new data to everyone connected to room
   socket.on("sendRoomData", ({ code, data }) => {
     if (rooms[code]) {
       if (rooms[code].language == "html/css/js") {
@@ -658,7 +672,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  //send and recive chats
+  //recive chats form user and brodcast to rest of room
   socket.on("sendChat", ({ code, name, message }) => {
     if (rooms[code]) {
       rooms[code].socketIDs.forEach((socketId) => {
@@ -667,7 +681,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  //check if user is owner
+  //check if user is owner to see if they are allowed to close the room
   socket.on("checkOwner", ({ name, password, code }) => {
     if (rooms[code]) {
       let room = rooms[code];
@@ -679,7 +693,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  //close room for all users
+  //close room for all users when owner closes
   socket.on("close", ({ code, password }) => {
     if (rooms[code]) {
       let room = rooms[code];
@@ -711,8 +725,9 @@ io.on("connection", (socket) => {
   });
   //---------------------------------------
 
-  //run code
+  //run code based on language, html/css/js and js are ran client side
   socket.on("run", ({ language, userData, firstName, lastName }) => {
+    //they are creating proceses to run the java or python code which run files created in the temp folder, then relaying the output to the client, then deleting the file from the temp folder
     if (language == "Python") {
       if (fs.existsSync(`temp/${firstName}${lastName}.py`)) {
         console.log("File already Running");
@@ -796,7 +811,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  //handle disconect
+  //handle disconect, update other uses and server that user has left the room
   socket.on("disconnect", () => {
     for (const code in rooms) {
       const index = rooms[code].socketIDs.indexOf(socket.id);
@@ -813,17 +828,20 @@ io.on("connection", (socket) => {
   });
 });
 
-//server side commands
+//server side commands to interact with server and database
 process.stdin.on("data", (data) => {
   const command = data.toString().trim();
   if (command == "help") {
+    //display all commands
     console.log(
       "Commands:\n- stop\n- close-{code}\n- display-{code}\n- codes\n- q$(query)"
     );
   } else if (command == "stop") {
+    //stop server
     console.log("Stopping the process...");
     process.exit(0);
   } else if (command.split("-")[0] == "close") {
+    //close any given room
     const code = Number(command.split("-")[1]);
     if (rooms[code]) {
       const room = rooms[code];
@@ -837,6 +855,7 @@ process.stdin.on("data", (data) => {
       console.log("Room does not exist");
     }
   } else if (command.split("-")[0] == "display") {
+    //display info about any given room
     const code = Number(command.split("-")[1]);
     if (rooms[code]) {
       console.log(rooms[code]);
@@ -844,10 +863,12 @@ process.stdin.on("data", (data) => {
       console.log("Room does not exist");
     }
   } else if (command == "codes") {
+    //display all active room codes
     for (let i = 0; i < codes.length; i++) {
       console.log(`- ${codes[i]}`);
     }
   } else if (command.split("$")[0] == "q") {
+    //send sql querys
     dbConnection.query(command.split("$")[1], function (err, result) {
       if (err) throw err;
 
