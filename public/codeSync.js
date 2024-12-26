@@ -32,7 +32,7 @@ fetch("/joinCodeSync", {
       alert(data.error);
     } else {
       sessionStorage.setItem("language", data.language);
-      console.log(sessionStorage.getItem("language"));
+      setHighlight();
     }
   })
   .catch((error) => {
@@ -44,7 +44,6 @@ window.onload = () => {
   //update codeing space, eventlistners, and output if the room is html/css/js
   checkHtml();
   updateSizes();
-  setHighlight();
 
   document.getElementById(
     "passwordDisplay"
@@ -297,7 +296,6 @@ document.getElementById("muteUnmute").addEventListener("click", toggleMute);
 //set syntax highlighting mode
 function setHighlight() {
   if (sessionStorage.getItem("language") != "html/css/js") {
-    console.log("test1");
     const targetElement = document.getElementById("pre");
 
     const referenceElement = document.getElementById("codeSpace");
@@ -309,7 +307,6 @@ function setHighlight() {
 
     if (sessionStorage.getItem("language") == "Python") {
       document.getElementById("code").className = "language-python";
-      console.log("test2");
     } else if (sessionStorage.getItem("language") == "Java") {
       document.getElementById("code").className = "language-java";
     } else if (sessionStorage.getItem("language") == "Javascript") {
