@@ -1,7 +1,7 @@
 //declaring a few variables
 const socket = io();
 var code = sessionStorage.getItem("code");
-var roomPassword = sessionStorage.getItem("roomPassword");
+var password = sessionStorage.getItem("roomPassword");
 var firstName = sessionStorage.getItem("firstName");
 var lastName = sessionStorage.getItem("lastName");
 var owner = false;
@@ -15,58 +15,57 @@ const roomId = "voice-chat-room";
 let isMuted = false;
 let ableToRun = true;
 
-window.onload = () => {
-  let roomPasswordOnLoad = sessionStorage.getItem("roomPassword");
-  //join the code sync when page load
-  fetch("/joinCodeSync", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      code,
-      roomPasswordOnLoad,
-      firstName,
-      lastName,
-    }),
+//join the code sync when page load
+fetch("/joinCodeSync", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    code,
+    password,
+    firstName,
+    lastName,
+  }),
+})
+  .then((response) => response.json())
+  .then((data) => {
+    if (data.error) {
+      alert(data.error);
+    } else {
+      sessionStorage.setItem("language", data.language);
+      setHighlight();
+    }
   })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.error) {
-        alert(data.error);
-      } else {
-        sessionStorage.setItem("language", data.language);
-        setHighlight();
+  .catch((error) => {
+    alert("An error occurred while joining CodeSync");
+    console.error("Error:", error.message);
+  });
 
-        //update codeing space, eventlistners, and output if the room is html/css/js
-        checkHtml();
-        updateSizes();
+window.onload = () => {
+  //update codeing space, eventlistners, and output if the room is html/css/js
+  checkHtml();
+  updateSizes();
 
-        document.getElementById(
-          "passwordDisplay"
-        ).innerHTML = `Password: ${sessionStorage.getItem("roomPassword")}`;
+  document.getElementById(
+    "passwordDisplay"
+  ).innerHTML = `Password: ${sessionStorage.getItem("roomPassword")}`;
 
-        socket.emit("connectSocket", { code });
+  socket.emit("connectSocket", { code });
 
-        document.title = `CodeSync | ${sessionStorage.getItem("code")}`;
-        document.getElementById(
-          "codeDisplay"
-        ).innerHTML = `Code: ${sessionStorage.getItem("code")}`;
-        document.getElementById(
-          "langDisplay"
-        ).innerHTML = `Language: ${sessionStorage.getItem("language")}`;
+  document.title = `CodeSync | ${sessionStorage.getItem("code")}`;
+  document.getElementById(
+    "codeDisplay"
+  ).innerHTML = `Code: ${sessionStorage.getItem("code")}`;
+  document.getElementById(
+    "langDisplay"
+  ).innerHTML = `Language: ${sessionStorage.getItem("language")}`;
 
-        const name = `${sessionStorage.getItem(
-          "firstName"
-        )} ${sessionStorage.getItem("lastName")}`;
-        const password = sessionStorage.getItem("password");
-        socket.emit("checkOwner", { name, password, code });
+  const name = `${sessionStorage.getItem("firstName")} ${sessionStorage.getItem(
+    "lastName"
+  )}`;
+  const password = sessionStorage.getItem("password");
+  socket.emit("checkOwner", { name, password, code });
 
-        addEventListeners();
-      }
-    })
-    .catch((error) => {
-      alert("An error occurred while joining CodeSync");
-      console.error("Error:", error.message);
-    });
+  addEventListeners();
 };
 
 socket.on("codeCompleate", () => {
