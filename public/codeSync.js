@@ -708,18 +708,18 @@ function leave() {
   if (owner) {
     let confirm = prompt("Confirm close (y or n)?");
     if (confirm) {
-      let password = sessionStorage.getItem("password");
+      let passwordToSend = sessionStorage.getItem("password");
       let code = sessionStorage.getItem("code");
       sessionStorage.removeItem("code");
       sessionStorage.removeItem("language");
       sessionStorage.removeItem("roomPassword");
 
-      socket.emit("close", { code, password });
+      socket.emit("close", { code, passwordToSend });
 
       fetch("/deleteRoom", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code, password }),
+        body: JSON.stringify({ code, passwordToSend }),
       })
         .then((response) => response.json())
         .then((data) => {
