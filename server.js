@@ -32,9 +32,7 @@ if (!fs.existsSync("./temp")) {
 
 //return hashed value
 function sha256(input) {
-  if (typeof input == String) {
-    return createHash("sha256").update(input).digest("hex");
-  }
+  return createHash("sha256").update(input).digest("hex");
 }
 
 //create random 6 didget code
