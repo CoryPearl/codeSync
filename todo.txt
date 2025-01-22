@@ -1,14 +1,10 @@
 TODO:
-- Comment codeSync.js
-- Owner able to kick people
+- Sometimes bug on room creation
 - Sizing issues on code area
+- Comment codesync.js
 - Remove Tab login
 
 Gay TODO:
 - js dosn't work for html/css/js
 - html/css/js boxes need top padding, maybe 5px
 - highlighting for html css js
-
-ssh -i "code-sync2.pem" ubuntu@ec2-54-197-203-130.compute-1.amazonaws.com
-scp -i "code-sync2.pem" ./Desktop/codeSync/serverAssets/.env ubuntu@ec2-54-197-203-130.compute-1.amazonaws.com:/home/ubuntu/codeSync/serverAssets
-git clone https://github.com/CoryPearl/codeSync.git

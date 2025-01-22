@@ -32,6 +32,7 @@ fetch("/joinCodeSync", {
       alert(data.error);
     } else {
       sessionStorage.setItem("language", data.language);
+      sessionStorage.setItem("address", data.address);
       document.getElementById(
         "langDisplay"
       ).innerHTML = `Language: ${sessionStorage.getItem("language")}`;
@@ -91,7 +92,6 @@ socket.on("ownerChecked", (data) => {
 //getting list of active users to display
 socket.on("updateUsers", (data) => {
   var toWright = "";
-
   for (let i = 0; i < Object.keys(data[0]).length; i++) {
     if (i < Object.keys(data[0]).length - 1) {
       toWright += data[0][i] + ", ";
@@ -180,7 +180,9 @@ function clearOutput() {
 function copyLink() {
   navigator.clipboard
     .writeText(
-      `https://codesync.click/joinCodeSyncByLink?code=${code}&password=${password}`
+      `https://${sessionStorage.getItem(
+        "address"
+      )}:3000/joinCodeSyncByLink?code=${code}&password=${password}`
     )
     .then(() => {
       console.log("Text copied to clipboard");
@@ -325,7 +327,6 @@ function setHighlight() {
 //checking if code room is in html/css/js and updating it accordingly
 function checkHtml() {
   if (sessionStorage.getItem("language") == "html/css/js") {
-    //fuck this shit this sucks
     document.getElementById("directions").style.display = "inline";
 
     document.getElementById("codeSpace").style.color = "white";
