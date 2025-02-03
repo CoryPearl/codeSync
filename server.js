@@ -1,6 +1,7 @@
 //declaring dependencies
 const express = require("express");
 const fs = require("fs");
+const path = require("path");
 const { createHash } = require("crypto");
 const https = require("https");
 const { Server } = require("socket.io");
@@ -45,6 +46,10 @@ const io = new Server(server);
 const port = 3000;
 const nets = networkInterfaces();
 
+//telling express what files to use
+app.use(express.json());
+app.use(express.static("public"));
+
 // declaring data storage that will earase on server close
 var rooms = {};
 var codes = [];
@@ -68,10 +73,6 @@ for (const name of Object.keys(nets)) {
 
 const ip = ipResults["en0"];
 
-//telling express what files to use
-app.use(express.json());
-app.use(express.static("public"));
-
 //return hashed value
 function sha256(input) {
   return createHash("sha256").update(input).digest("hex");
@@ -80,6 +81,27 @@ function sha256(input) {
 //create random 6 didget code
 function generateCode() {
   return Math.floor(100000 + Math.random() * 900000);
+}
+
+function getDate() {
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, "0");
+  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+  var yyyy = today.getFullYear();
+
+  return `${mm}-${dd}-${yyyy}`;
+}
+
+function saveLog(data) {
+  const date = new Date();
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const seconds = date.getSeconds().toString().padStart(2, "0");
+
+  fs.appendFileSync(
+    `serverAssets/logs/${getDate()}.txt`,
+    `${hours}:${minutes}:${seconds}: ${data}\n`
+  );
 }
 
 //send email for 2fa
@@ -134,9 +156,9 @@ function sendEmail(firstName, email) {
   //sending email and logging result
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
-      console.log(error);
+      saveLog(error);
     } else {
-      console.log("Email sent: " + info.response);
+      saveLog("Email sent: " + info.response);
     }
   });
 }
@@ -163,7 +185,7 @@ var checkOwnerConnected = setInterval(function () {
         room.socketIDs.forEach((socketId) => {
           io.to(socketId).emit("ownerClosed");
         });
-        console.log(`Room deleted with code because owner closed tab: ${code}`);
+        saveLog(`Room deleted with code because owner closed tab: ${code}`);
       }
     }
   }
@@ -243,11 +265,7 @@ app.post("/createCodeSync", (req, res) => {
   //adding room to storage
   rooms[code] = new_room;
 
-  console.log(
-    `Room created under code: ${code} using the language ${language}`
-  );
-
-  console.log(new_room);
+  saveLog(`Room created under code: ${code} using the language ${language}`);
 
   return res.send({ code: code });
 });
@@ -262,7 +280,7 @@ app.post("/deleteRoom", (req, res) => {
     if (rooms[code].ownerPassword == password) {
       delete rooms[code];
       delete codes.indexOf(code);
-      console.log(`Room deleted with code: ${code}`);
+      saveLog(`Room deleted with code: ${code}`);
       return res.status(200).json({ success: true });
     }
   }
@@ -278,7 +296,7 @@ app.post("/joinCodeSync", (req, res) => {
     if (rooms[code].password == password) {
       //adding user to room and sending back language
       rooms[code].users.push(`${firstName} ${lastName}`);
-      console.log(`User connected to room: ${code}`);
+      saveLog(`User connected to room: ${code}`);
       return res.send({
         language: rooms[code].language,
         address: ip,
@@ -286,9 +304,7 @@ app.post("/joinCodeSync", (req, res) => {
     } else {
       return res.json({ error: "Server error" });
     }
-  }
-
-  if (!roomFound) {
+  } else {
     return res.json({ error: "Server error" });
   }
 });
@@ -379,8 +395,7 @@ app.post("/createAccount", (req, res) => {
     email,
     password,
   };
-
-  console.log(newUser);
+  saveLog("New user\n" + newUser);
 
   const full = {
     email,
@@ -411,7 +426,7 @@ app.post("/createAccount", (req, res) => {
             if (err) {
               return res.status(500).json({ error: "Failed to save user" });
             } else {
-              console.log("New user created succsefully");
+              saveLog("New user created succsefully");
               return res.status(200).json({ success: true });
             }
           }
@@ -450,7 +465,7 @@ app.get("/getInfo", (req, res) => {
       const first_name = user.newUser.firstName;
       const last_name = user.newUser.lastName;
 
-      console.log("Account info sent");
+      saveLog("Account info sent");
       return res.send({ first: first_name, last: last_name });
     }
   });
@@ -483,7 +498,7 @@ app.post("/signIn", (req, res) => {
       return res.status(400).json({ error: "Incorrect password" });
     }
 
-    console.log("User sign in succses");
+    saveLog("User sign in succses");
     return res.status(200).json({ success: true });
   });
 });
@@ -526,7 +541,7 @@ app.post("/changeInfo", (req, res) => {
     }
   });
 
-  console.log("User info changed succsesfully");
+  saveLog("User info changed succsesfully");
   return res.status(200).json({ success: true });
 });
 //------------------------------------------------------------------------------------------------------------------------------
@@ -750,7 +765,7 @@ io.on("connection", (socket) => {
         room.socketIDs.forEach((socketId) => {
           io.to(socketId).emit("ownerClosed");
         });
-        console.log(`Room ${code} closed`);
+        saveLog(`Room ${code} closed`);
       }
     }
   });
@@ -779,7 +794,7 @@ io.on("connection", (socket) => {
     //they are creating proceses to run the java or python code which run files created in the temp folder, then relaying the output to the client, then deleting the file from the temp folder
     if (language == "Python") {
       if (fs.existsSync(`temp/${firstName}${lastName}.py`)) {
-        console.log("File already Running");
+        saveLog("File already Running");
       } else {
         fs.writeFile(`temp/${firstName}${lastName}.py`, userData, (err) => {
           if (err) {
@@ -822,7 +837,7 @@ io.on("connection", (socket) => {
       }
     } else if (language == "Java") {
       if (fs.existsSync(`temp/${firstName}${lastName}.java`)) {
-        console.log("File already Running");
+        saveLog("File already Running");
       } else {
         fs.writeFile(`temp/${firstName}${lastName}.java`, userData, (err) => {
           if (err) {
@@ -870,7 +885,7 @@ io.on("connection", (socket) => {
         rooms[code].socketIDs.forEach((socketId) => {
           io.to(socketId).emit("updateUsers", [rooms[code].users]);
         });
-        console.log(`User disconected from room ${code}`);
+        saveLog(`User disconected from room ${code}`);
         break;
       }
     }
@@ -929,6 +944,12 @@ process.stdin.on("data", (data) => {
   }
 });
 
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err);
+
+  saveLog(`Uncaught Exception: ${err}`);
+});
+
 //Create connection to database
 // const dbConnection = mysql.createConnection({
 //   host: process.env.DB_HOST,
@@ -950,4 +971,6 @@ process.stdin.on("data", (data) => {
 
 server.listen(port, ip.toString(), () => {
   console.log(`Server is running on https://${ip.toString()}:${port}`);
+  console.log("Type 'help' for a list of commands");
+  console.log("Check logs folder in server assets for updated logs");
 });

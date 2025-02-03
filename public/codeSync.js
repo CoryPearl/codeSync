@@ -177,6 +177,7 @@ function clearOutput() {
   document.getElementById("output").value = "";
 }
 
+//copy link of room to clipboard
 function copyLink() {
   navigator.clipboard
     .writeText(
@@ -194,6 +195,7 @@ function copyLink() {
   alert("Linked copied to clipboard!");
 }
 
+//sending command to server
 function command(command) {
   socket.emit("userInput", command);
 
@@ -848,17 +850,28 @@ function run() {
     } else if (sessionStorage.getItem("language") == "Javascript") {
       const js = document.getElementById("codeSpace").value;
 
+      document.getElementById("run").style.backgroundColor = "rgb(209, 56, 56)";
+      document.getElementById("run").innerHTML = "Stop";
+
       try {
-        const result = eval(js);
-        document.getElementById("output").value =
-          result !== undefined ? result : "Code exicuted without output";
+        const originalConsoleLog = console.log;
+        console.log = function (message) {
+          document.getElementById("output").value += message + "\n";
+        };
+
+        const func = new Function(js);
+        const result = func();
+
+        console.log = originalConsoleLog; // Restore the original console.log
       } catch (error) {
         document.getElementById("output").value = `Error: ${error.message}`;
       }
 
-      document.getElementById("run").style.backgroundColor = "rgb(209, 56, 56)";
-      document.getElementById("run").innerHTML = "Stop";
-      ableToRun = false;
+      document.getElementById("output").scrollTop =
+        document.getElementById("output").scrollHeight;
+      document.getElementById("run").style.backgroundColor = "rgb(6, 186, 12)";
+      document.getElementById("run").innerHTML = "Run";
+      ableToRun = true;
     } else {
       const language = sessionStorage.getItem("language");
       const userData = document.getElementById("codeSpace").value;

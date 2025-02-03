@@ -7,11 +7,25 @@ Info:
   conatins a folder called assets which is simply images used by the website.
 - The temp folder is a folder to create temporary instances of python files and java files in to collect their output
 
+To run:
+
+- Install Node
+  - Open terminal
+  - Type "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash" and hit enter to install nvm (node version manager)
+  - Type "nvm install 22" and hit ennter to install node version 22
+  - Type "node -v" and hit enter to confirm installment
+- Un zip folder
+- Open new terminal in folder
+- Type "npm i" and hit enter to install required packages
+- Type "node server.js" and hit enter
+- Server will auto detect private ip and run on port 3000
+- Copy outputed link and enter into search bar
+
 Sources:
 
 - socketio.js from (c) 2014-2023 Guillermo Rauch
 - highlight js from 2006-2022 Ivan Sagalaev and other contributors
-- chat gpt
 - w3schools
+- chatgpt for voice chat
 - google ai for simple syntax questions
 - stack overflow

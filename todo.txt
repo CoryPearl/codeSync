@@ -1,10 +1,7 @@
 TODO:
-- Sometimes bug on room creation
-- Sizing issues on code area
-- Comment codesync.js
-- Remove Tab login
-
-Gay TODO:
+- Sizing issues on code area but fixes on reload
 - js dosn't work for html/css/js
-- html/css/js boxes need top padding, maybe 5px
+- html/css/js boxe sizing
 - highlighting for html css js
+
+- Remove Tab login
