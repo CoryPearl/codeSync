@@ -39,8 +39,34 @@ fetch("/joinCodeSync", {
       setHighlight();
     }
   })
+  .then(() => {
+    //update codeing space, eventlistners, and output if the room is html/css/js
+    checkHtml();
+    updateSizes();
+
+    document.getElementById(
+      "passwordDisplay"
+    ).innerHTML = `Password: ${sessionStorage.getItem("roomPassword")}`;
+
+    socket.emit("connectSocket", { code });
+
+    document.title = `CodeSync | ${sessionStorage.getItem("code")}`;
+    document.getElementById(
+      "codeDisplay"
+    ).innerHTML = `Code: ${sessionStorage.getItem("code")}`;
+    document.getElementById(
+      "langDisplay"
+    ).innerHTML = `Language: ${sessionStorage.getItem("language")}`;
+
+    const name = `${sessionStorage.getItem(
+      "firstName"
+    )} ${sessionStorage.getItem("lastName")}`;
+    const password = sessionStorage.getItem("password");
+    socket.emit("checkOwner", { name, password, code });
+
+    addEventListeners();
+  })
   .catch((error) => {
-    alert("An error occurred while joining CodeSync");
     console.error("Error:", error.message);
   });
 

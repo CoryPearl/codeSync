@@ -1,7 +1,6 @@
 TODO:
-- Sizing issues on code area but fixes on reload
 - js dosn't work for html/css/js
-- html/css/js boxe sizing
+- html/css/js box sizing
 - highlighting for html css js
 
 - Remove Tab login

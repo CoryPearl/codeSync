@@ -62,6 +62,7 @@ for (const name of Object.keys(nets)) {
     // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
     // 'IPv4' is in Node <= 17, from 18 it's a number 4 or 6
     const familyV4Value = typeof net.family === "string" ? "IPv4" : 4;
+    // spawn("node", [`serverAssets/logs/extra/test.js`]);
     if (net.family === familyV4Value && !net.internal) {
       if (!ipResults[name]) {
         ipResults[name] = [];
@@ -224,7 +225,7 @@ app.post("/createCodeSync", (req, res) => {
 
   //creating room based on lnaguage, html/css/js needs more data space
   if (language == "html/css/js") {
-    var new_room = {
+    var newRoom = {
       owner: owner,
       ownerPassword: ownerPassword,
       code: code,
@@ -239,7 +240,7 @@ app.post("/createCodeSync", (req, res) => {
       socketIDs: [],
     };
   } else {
-    var new_room = {
+    var newRoom = {
       owner: owner,
       ownerPassword: ownerPassword,
       code: code,
@@ -252,18 +253,18 @@ app.post("/createCodeSync", (req, res) => {
   }
 
   //adding starter code to room depending on the language
-  if (new_room.language == "Python") {
-    new_room.data = `print("Hello World")`;
-  } else if (new_room.language == "Java") {
-    new_room.data = `class HelloWorld\n{\n\tpublic static void main(String []args)\n\t{\n\t\tSystem.out.println("Hello World!");\n\t}\n};`;
-  } else if (new_room.language == "Javascript") {
-    new_room.data = `console.log("Hello World")`;
-  } else if (new_room.language == "html/css/js") {
-    new_room.data.html = `<!DOCTYPE html>\n<html lang="en">\n\t<head>\n\t\t<meta charset="UTF-8" />\n\t\t<meta name="viewport" content="width=device-width, initial-scale=1.0" />\n\t\t<title>Hello World</title>\n\t</head>\n\t<body>\n\t\t<h1>Hello World!</h1>\n\t</body>\n</html>`;
+  if (newRoom.language == "Python") {
+    newRoom.data = `print("Hello World")`;
+  } else if (newRoom.language == "Java") {
+    newRoom.data = `class HelloWorld\n{\n\tpublic static void main(String []args)\n\t{\n\t\tSystem.out.println("Hello World!");\n\t}\n};`;
+  } else if (newRoom.language == "Javascript") {
+    newRoom.data = `console.log("Hello World")`;
+  } else if (newRoom.language == "html/css/js") {
+    newRoom.data.html = `<!DOCTYPE html>\n<html lang="en">\n\t<head>\n\t\t<meta charset="UTF-8" />\n\t\t<meta name="viewport" content="width=device-width, initial-scale=1.0" />\n\t\t<title>Hello World</title>\n\t</head>\n\t<body>\n\t\t<h1>Hello World!</h1>\n\t</body>\n</html>`;
   }
 
   //adding room to storage
-  rooms[code] = new_room;
+  rooms[code] = newRoom;
 
   saveLog(`Room created under code: ${code} using the language ${language}`);
 
@@ -462,11 +463,11 @@ app.get("/getInfo", (req, res) => {
     if (user.newUser.password !== password) {
       return res.status(400).json({ error: "Incorrect password" });
     } else {
-      const first_name = user.newUser.firstName;
-      const last_name = user.newUser.lastName;
+      const firstName = user.newUser.firstName;
+      const lastName = user.newUser.lastName;
 
       saveLog("Account info sent");
-      return res.send({ first: first_name, last: last_name });
+      return res.send({ first: firstName, last: lastName });
     }
   });
 });
@@ -505,10 +506,10 @@ app.post("/signIn", (req, res) => {
 
 //change info
 app.post("/changeInfo", (req, res) => {
-  var { email, password, firstName, lastName, new_email, new_password } =
+  var { email, password, firstName, lastName, newEmail, newPassword } =
     req.body;
   password = sha256(password);
-  new_password = sha256(new_password);
+  newPassword = sha256(newPassword);
 
   fs.readFile("serverAssets/users.json", "utf8", (err, data) => {
     if (err && err.code !== "ENOENT") {
@@ -523,11 +524,11 @@ app.post("/changeInfo", (req, res) => {
     const user = users.find((user) => user.email === email);
 
     if ((password = user.newUser.password)) {
-      user.email = new_email;
+      user.email = newEmail;
       user.newUser.firstName = firstName;
       user.newUser.lastName = lastName;
-      user.newUser.email = new_email;
-      user.newUser.password = new_password;
+      user.newUser.email = newEmail;
+      user.newUser.password = newPassword;
 
       fs.writeFile(
         "serverAssets/users.json",
@@ -663,7 +664,7 @@ app.post("/changeInfo", (req, res) => {
 //   );
 // });
 
-//socketIo for all the room things
+//socketIo for all the room client/server communication in the coding room
 io.on("connection", (socket) => {
   //initiate connection
   socket.on("connectSocket", ({ code }) => {
@@ -766,6 +767,8 @@ io.on("connection", (socket) => {
           io.to(socketId).emit("ownerClosed");
         });
         saveLog(`Room ${code} closed`);
+        // delete rooms[code];
+        codes.splice(codes.indexOf(code));
       }
     }
   });
