@@ -26,7 +26,7 @@ function sendInfo(firstName, lastName, email, password) {
     .then((response) => response.json())
     .then((data) => {
       if (data.error) {
-        alert(data.error);
+        newAlert(data.error);
       } else {
         document.getElementById("authCode").style.display = "inline";
         document.getElementById("authButton").style.display = "inline";
@@ -38,11 +38,11 @@ function sendInfo(firstName, lastName, email, password) {
             "timer"
           ).innerHTML = `Expires in ${timeLeft} sec`;
         }, 1000);
-        alert("An authentication code has been emailed to you!");
+        newAlert("An authentication code has been emailed to you!");
       }
     })
     .catch((error) => {
-      alert("An error occurred while creating the account.");
+      newAlert("An error occurred while creating the account.");
       console.error("Error:", error.message);
     });
 }
@@ -64,13 +64,13 @@ function goToSignIn() {
       if (email && password && firstName && lastName) {
         sendInfo(firstName, lastName, email, password);
       } else {
-        alert("All feilds requierd");
+        newAlert("All feilds requierd");
       }
     } else {
-      alert("Invalid email");
+      newAlert("Invalid email");
     }
   } else {
-    alert("Passwords do not match");
+    newAlert("Passwords do not match");
   }
 }
 
@@ -91,7 +91,7 @@ function authenticate() {
       .then((response) => response.json())
       .then((data) => {
         if (data.error) {
-          alert(data.error);
+          newAlert(data.error);
         } else {
           console.log(data);
           if (data.success) {
@@ -108,23 +108,23 @@ function authenticate() {
               .then((response) => response.json())
               .then((data) => {
                 if (data.error) {
-                  alert(data.error);
+                  newAlert(data.error);
                 } else {
                   console.log("Account created successfully");
                   changePage("login");
                 }
               })
               .catch((error) => {
-                alert("An error occurred while creating the account.");
+                newAlert("An error occurred while creating the account.");
                 console.error("Error:", error.message);
               });
           } else {
-            alert("Wrong code please try again");
+            newAlert("Wrong code please try again");
           }
         }
       })
       .catch((error) => {
-        alert("An error occurred while creating the account.");
+        newAlert("An error occurred while creating the account.");
         console.error("Error:", error.message);
       });
   }

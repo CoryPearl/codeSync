@@ -105,7 +105,7 @@ function submitNameChange() {
         .then((response) => response.json())
         .then((data) => {
           if (data.error) {
-            alert(data.error);
+            newA(data.error);
           } else {
             console.log("Info changed successfully");
             sessionStorage.setItem("firstName", firstName);
@@ -120,12 +120,12 @@ function submitNameChange() {
           }
         })
         .catch((error) => {
-          alert("An error occurred while chaning info");
+          newA("An error occurred while chaning info");
           console.error("Error:", error.message);
         });
     }
   } else {
-    alert("Error: Invalid email");
+    newA("Error: Invalid email");
   }
 }
 
@@ -167,7 +167,7 @@ function join() {
     //   .then((response) => response.json())
     //   .then((data) => {
     //     if (data.error) {
-    //       alert(data.error);
+    //       newA(data.error);
     //     } else {
     //       sessionStorage.setItem("code", code);
     //       sessionStorage.setItem("roomPassword", password);
@@ -175,11 +175,11 @@ function join() {
     //     }
     //   })
     //   .catch((error) => {
-    //     alert("An error occurred while joining CodeSync");
+    //     newA("An error occurred while joining CodeSync");
     //     console.error("Error:", error.message);
     //   });
   } else {
-    alert("Please enter both a first and last name");
+    newA("Please enter both a first and last name");
   }
 }
 

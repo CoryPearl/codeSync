@@ -22,7 +22,7 @@ function sendInfo(email, password) {
     .then((response) => response.json())
     .then((data) => {
       if (data.error) {
-        alert(data.error);
+        newAlert(data.error);
       } else {
         console.log("Signed in successfully");
         sessionStorage.setItem("loggedIn", "True");
@@ -33,7 +33,7 @@ function sendInfo(email, password) {
       }
     })
     .catch((error) => {
-      alert("An error occurred while signing in");
+      newAlert("An error occurred while signing in");
       console.error("Error:", error.message);
     });
 }
@@ -46,7 +46,7 @@ function signIn() {
   if (email && password) {
     sendInfo(email, password);
   } else {
-    alert("All feilds requierd");
+    newAlert("All feilds requierd");
   }
 }
 

@@ -29,7 +29,7 @@ fetch("/joinCodeSync", {
   .then((response) => response.json())
   .then((data) => {
     if (data.error) {
-      alert(data.error);
+      newAlert(data.error);
     } else {
       sessionStorage.setItem("language", data.language);
       sessionStorage.setItem("address", data.address);
@@ -65,6 +65,7 @@ fetch("/joinCodeSync", {
     socket.emit("checkOwner", { name, password, code });
 
     addEventListeners();
+    setHighlight();
   })
   .catch((error) => {
     console.error("Error:", error.message);
@@ -96,6 +97,7 @@ window.onload = () => {
   socket.emit("checkOwner", { name, password, code });
 
   addEventListeners();
+  setHighlight();
 };
 
 socket.on("codeCompleate", () => {
@@ -218,7 +220,7 @@ function copyLink() {
       console.error("Failed to copy: ", err);
     });
 
-  alert("Linked copied to clipboard!");
+  newAlert("Linked copied to clipboard!");
 }
 
 //sending command to server
@@ -734,7 +736,7 @@ function updateSizes() {
 //leaving logic and closing logic if owner
 function leave() {
   if (owner) {
-    let confirm = prompt("Confirm close (y or n)?");
+    let confirm = confirm("Confirm close (y or n)?");
     if (confirm) {
       var password = sessionStorage.getItem("password");
       var code = sessionStorage.getItem("code");
@@ -752,7 +754,7 @@ function leave() {
         .then((response) => response.json())
         .then((data) => {
           if (data.error) {
-            alert(data.error);
+            newAlert(data.error);
           } else {
             window.location.href = "index.html";
           }
@@ -762,7 +764,7 @@ function leave() {
         });
     }
   } else {
-    let confirm = prompt("Confirm leave (y or n)?");
+    let confirm = confirm("Confirm leave (y or n)?");
     if (confirm) {
       window.location.href = "index.html";
     }
@@ -806,7 +808,7 @@ function sendChat() {
       document.getElementById("chatInput").value = "";
     }
   } else {
-    alert("Error: Empty chat message");
+    newAlert("Error: Empty chat message");
   }
 }
 

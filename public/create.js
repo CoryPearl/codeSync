@@ -106,7 +106,7 @@ function submitNameChange() {
         .then((response) => response.json())
         .then((data) => {
           if (data.error) {
-            alert(data.error);
+            newAlert(data.error);
           } else {
             console.log("Info changed successfully");
             sessionStorage.setItem("firstName", firstName);
@@ -121,12 +121,12 @@ function submitNameChange() {
           }
         })
         .catch((error) => {
-          alert("An error occurred while chaning info");
+          newAlert("An error occurred while chaning info");
           console.error("Error:", error.message);
         });
     }
   } else {
-    alert("Error: Invalid email");
+    newAlert("Error: Invalid email");
   }
 }
 
@@ -162,7 +162,7 @@ function create() {
       .then((response) => response.json())
       .then((data) => {
         if (data.error) {
-          alert(data.error);
+          newAlert(data.error);
         } else {
           console.log("CodeSync created successfully");
           console.log("Code: ", data.code);
@@ -173,10 +173,10 @@ function create() {
         }
       })
       .catch((error) => {
-        alert("An error occurred while creating CodeSync");
+        newAlert("An error occurred while creating CodeSync");
         console.error("Error:", error.message);
       });
   } else {
-    alert("Must be signed in to create a CodeSync or a feild is empty");
+    newAlert("Must be signed in to create a CodeSync or a feild is empty");
   }
 }

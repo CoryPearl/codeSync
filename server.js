@@ -1,7 +1,6 @@
 //declaring dependencies
 const express = require("express");
 const fs = require("fs");
-const path = require("path");
 const { createHash } = require("crypto");
 const https = require("https");
 const { Server } = require("socket.io");
@@ -9,6 +8,7 @@ const { networkInterfaces } = require("os");
 const nodemailer = require("nodemailer");
 const handlebars = require("handlebars");
 const { spawn } = require("child_process");
+// const path = require("path");
 // const http = require("http");
 // const mysql = require("mysql2");
 require("dotenv").config({ path: "serverAssets/.env" });
@@ -141,7 +141,7 @@ function sendEmail(firstName, email) {
 
   //telling nodemailer who to email from, who to email to and what to email
   var mailOptions = {
-    from: "cory.pearl99@gmail.com",
+    from: process.env.EMAIL_USER,
     to: email,
     subject: "CodeSync Verification",
     html: htmlToSend,
@@ -321,33 +321,114 @@ app.get("/joinCodeSyncByLink", (req, res) => {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Redirecting...</title>
+    <title>CodeSync | Join by link</title>
   </head>
-  <body></body>
+  <style>
+    body {
+      margin: 0px;
+      padding: 0px;
+      flex-direction: column;
+      height: 100vh;
+      background-color: rgb(70, 0, 45);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #whole {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: rgb(36, 36, 36);
+      border-radius: 15px;
+      width: 50%;
+      height: 70%;
+      box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.45);
+    }
+
+    #whole p {
+      margin: 0px;
+      padding: 0px;
+      color: white;
+    }
+
+    #whole input {
+      margin: 10px;
+      width: 80%;
+      height: 40px;
+      border-radius: 10px;
+      border: none;
+      padding-left: 10px;
+    }
+
+    #whole input:focus {
+      outline: none;
+    }
+
+    #whole button {
+      margin: 10px;
+      width: 50%;
+      height: 40px;
+      border-radius: 10px;
+      border: none;
+      background-color: rgb(28, 133, 208);
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+  <body>
+    <div id="whole">
+      <p style="font-weight: bold; font-size: 200%; margin-bottom: 20px">
+        Join by link
+      </p>
+      <p>Room code: ${code}</p>
+      <p>Room password: ${password}</p>
+      <input
+        type="text"
+        id="firstName"
+        placeholder="First Name"
+        autocomplete="off"
+      />
+      <input
+        type="text"
+        id="lastName"
+        placeholder="Last Name"
+        autocomplete="off"
+      />
+      <button id="join" onclick="join()">Join</button>
+    </div>
+  </body>
+  <script src="betterAlerts.js"></script>
   <script>
+    const code = ${code};
+    const password = "${password}";
+
     window.onload = () => {
-      if (
-        sessionStorage.getItem("firstName") != null
-      ) {
+      if (sessionStorage.getItem("firstName") != null) {
         sessionStorage.setItem("code", ${code});
         sessionStorage.setItem("roomPassword", "${password}");
         window.location.href = "codeSync.html";
-      } else {
-        var firstName = prompt("Enter first name:");
-        var lastName = prompt("Enter last name:");
-        if (firstName && lastName) {
-          sessionStorage.setItem("firstName", firstName);
-          sessionStorage.setItem("lastName", lastName);
-            sessionStorage.setItem("code", ${code});
-          sessionStorage.setItem("roomPassword", "${password}");
-          window.location.href = "codeSync.html";
-        } else {
-          window.location.href = "index.html";
-        }
       }
     };
+
+    function join() {
+      const firstName = document.getElementById("firstName").value;
+      const lastName = document.getElementById("lastName").value;
+
+      if (firstName.length < 1 || lastName.length < 1) {
+        newAlert("Please enter your name");
+      }
+
+      sessionStorage.setItem("firstName", firstName);
+      sessionStorage.setItem("lastName", lastName);
+      sessionStorage.setItem("code", ${code});
+      sessionStorage.setItem("roomPassword", "${password}");
+      window.location.href = "codeSync.html";
+    }
   </script>
 </html>
+
   `;
 
   res.send(html);
@@ -509,7 +590,10 @@ app.post("/changeInfo", (req, res) => {
   var { email, password, firstName, lastName, newEmail, newPassword } =
     req.body;
   password = sha256(password);
-  newPassword = sha256(newPassword);
+
+  if (newPassword != undefined) {
+    newPassword = sha256(newPassword);
+  }
 
   fs.readFile("serverAssets/users.json", "utf8", (err, data) => {
     if (err && err.code !== "ENOENT") {
@@ -523,12 +607,15 @@ app.post("/changeInfo", (req, res) => {
 
     const user = users.find((user) => user.email === email);
 
-    if ((password = user.newUser.password)) {
-      user.email = newEmail;
-      user.newUser.firstName = firstName;
-      user.newUser.lastName = lastName;
-      user.newUser.email = newEmail;
-      user.newUser.password = newPassword;
+    if (password == user.newUser.password) {
+      user.email = newEmail !== undefined ? newEmail : email;
+      user.newUser.firstName =
+        firstName !== undefined ? firstName : user.newUser.firstName;
+      user.newUser.lastName =
+        lastName !== undefined ? lastName : user.newUser.lastName;
+      user.newUser.email = newEmail !== undefined ? newEmail : email;
+      user.newUser.password =
+        newPassword !== undefined ? newPassword : password;
 
       fs.writeFile(
         "serverAssets/users.json",
