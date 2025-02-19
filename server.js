@@ -1059,6 +1059,7 @@ process.on("uncaughtException", (err) => {
 // });
 
 server.listen(port, ip.toString(), () => {
+  saveLog("Server started");
   console.log(`Server is running on https://${ip.toString()}:${port}`);
   console.log("Type 'help' for a list of commands");
   console.log("Check logs folder in server assets for updated logs");
