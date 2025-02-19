@@ -86,7 +86,7 @@ function submitNameChange() {
     email = sessionStorage.getItem("email");
     password = sessionStorage.getItem("password");
 
-    let result = confirm(
+    let result = betterConfirm(
       `New information ok?\n------------------------------\nFirst name: ${firstName}\nLast name: ${lastName}\nEmail: ${new_email}\nPassword: ${new_password}`
     );
 
@@ -106,7 +106,7 @@ function submitNameChange() {
         .then((response) => response.json())
         .then((data) => {
           if (data.error) {
-            newAlert(data.error);
+            betterAlert(data.error);
           } else {
             console.log("Info changed successfully");
             sessionStorage.setItem("firstName", firstName);
@@ -121,12 +121,12 @@ function submitNameChange() {
           }
         })
         .catch((error) => {
-          newAlert("An error occurred while chaning info");
+          betterAlert("An error occurred while chaning info");
           console.error("Error:", error.message);
         });
     }
   } else {
-    newAlert("Error: Invalid email");
+    betterAlert("Error: Invalid email");
   }
 }
 
@@ -162,7 +162,7 @@ function create() {
       .then((response) => response.json())
       .then((data) => {
         if (data.error) {
-          newAlert(data.error);
+          betterAlert(data.error);
         } else {
           console.log("CodeSync created successfully");
           console.log("Code: ", data.code);
@@ -173,10 +173,10 @@ function create() {
         }
       })
       .catch((error) => {
-        newAlert("An error occurred while creating CodeSync");
+        betterAlert("An error occurred while creating CodeSync");
         console.error("Error:", error.message);
       });
   } else {
-    newAlert("Must be signed in to create a CodeSync or a feild is empty");
+    betterAlert("Must be signed in to create a CodeSync or a feild is empty");
   }
 }

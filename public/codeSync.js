@@ -29,7 +29,7 @@ fetch("/joinCodeSync", {
   .then((response) => response.json())
   .then((data) => {
     if (data.error) {
-      newAlert(data.error);
+      betterAlert(data.error);
     } else {
       sessionStorage.setItem("language", data.language);
       sessionStorage.setItem("address", data.address);
@@ -220,7 +220,7 @@ function copyLink() {
       console.error("Failed to copy: ", err);
     });
 
-  newAlert("Linked copied to clipboard!");
+  betterAlert("Linked copied to clipboard!");
 }
 
 //sending command to server
@@ -736,7 +736,7 @@ function updateSizes() {
 //leaving logic and closing logic if owner
 function leave() {
   if (owner) {
-    let confirm = confirm("Confirm close (y or n)?");
+    let confirm = betterConfirm("Confirm close?");
     if (confirm) {
       var password = sessionStorage.getItem("password");
       var code = sessionStorage.getItem("code");
@@ -754,7 +754,7 @@ function leave() {
         .then((response) => response.json())
         .then((data) => {
           if (data.error) {
-            newAlert(data.error);
+            betterAlert(data.error);
           } else {
             window.location.href = "index.html";
           }
@@ -764,7 +764,7 @@ function leave() {
         });
     }
   } else {
-    let confirm = confirm("Confirm leave (y or n)?");
+    let confirm = betterConfirm("Confirm leave (y or n)?");
     if (confirm) {
       window.location.href = "index.html";
     }
@@ -808,7 +808,7 @@ function sendChat() {
       document.getElementById("chatInput").value = "";
     }
   } else {
-    newAlert("Error: Empty chat message");
+    betterAlert("Error: Empty chat message");
   }
 }
 

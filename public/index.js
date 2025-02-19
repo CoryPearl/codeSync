@@ -80,7 +80,7 @@ function submitNameChange() {
     email = sessionStorage.getItem("email");
     password = sessionStorage.getItem("password");
 
-    let result = confirm(
+    let result = betterConfirm(
       `New information ok?\n------------------------------\nFirst name: ${firstName}\nLast name: ${lastName}\nEmail: ${new_email}\nPassword: ${new_password}`
     );
 
@@ -100,7 +100,7 @@ function submitNameChange() {
         .then((response) => response.json())
         .then((data) => {
           if (data.error) {
-            alert(data.error);
+            betterAlert(data.error);
           } else {
             console.log("Info changed successfully");
             sessionStorage.setItem("firstName", firstName);
@@ -115,12 +115,12 @@ function submitNameChange() {
           }
         })
         .catch((error) => {
-          alert("An error occurred while chaning info");
+          betterAlert("An error occurred while chaning info");
           console.error("Error:", error.message);
         });
     }
   } else {
-    alert("Error: Invalid email");
+    betterAlert("Error: Invalid email");
   }
 }
 

@@ -85,7 +85,7 @@ function submitNameChange() {
     email = sessionStorage.getItem("email");
     password = sessionStorage.getItem("password");
 
-    let result = confirm(
+    let result = betterConfirm(
       `New information ok?\n------------------------------\nFirst name: ${firstName}\nLast name: ${lastName}\nEmail: ${new_email}\nPassword: ${new_password}`
     );
 
@@ -105,7 +105,7 @@ function submitNameChange() {
         .then((response) => response.json())
         .then((data) => {
           if (data.error) {
-            newA(data.error);
+            betterAlert(data.error);
           } else {
             console.log("Info changed successfully");
             sessionStorage.setItem("firstName", firstName);
@@ -120,12 +120,12 @@ function submitNameChange() {
           }
         })
         .catch((error) => {
-          newA("An error occurred while chaning info");
+          betterAlert("An error occurred while chaning info");
           console.error("Error:", error.message);
         });
     }
   } else {
-    newA("Error: Invalid email");
+    betterAlert("Error: Invalid email");
   }
 }
 
@@ -167,7 +167,7 @@ function join() {
     //   .then((response) => response.json())
     //   .then((data) => {
     //     if (data.error) {
-    //       newA(data.error);
+    //       betterAlert(data.error);
     //     } else {
     //       sessionStorage.setItem("code", code);
     //       sessionStorage.setItem("roomPassword", password);
@@ -175,16 +175,16 @@ function join() {
     //     }
     //   })
     //   .catch((error) => {
-    //     newA("An error occurred while joining CodeSync");
+    //     betterAlert("An error occurred while joining CodeSync");
     //     console.error("Error:", error.message);
     //   });
   } else {
-    newA("Please enter both a first and last name");
+    betterAlert("Please enter both a first and last name");
   }
 }
 
 function joinByLink() {
-  const link = prompt("Enter the join link:");
+  const link = betterPrompt("Enter the join link:");
   if (link != null) {
     window.location.href = link;
   }

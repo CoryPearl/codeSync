@@ -26,7 +26,7 @@ function sendInfo(firstName, lastName, email, password) {
     .then((response) => response.json())
     .then((data) => {
       if (data.error) {
-        newAlert(data.error);
+        betterAlert(data.error);
       } else {
         document.getElementById("authCode").style.display = "inline";
         document.getElementById("authButton").style.display = "inline";
@@ -38,11 +38,11 @@ function sendInfo(firstName, lastName, email, password) {
             "timer"
           ).innerHTML = `Expires in ${timeLeft} sec`;
         }, 1000);
-        newAlert("An authentication code has been emailed to you!");
+        betterAlert("An authentication code has been emailed to you!");
       }
     })
     .catch((error) => {
-      newAlert("An error occurred while creating the account.");
+      betterAlert("An error occurred while creating the account.");
       console.error("Error:", error.message);
     });
 }
@@ -64,13 +64,13 @@ function goToSignIn() {
       if (email && password && firstName && lastName) {
         sendInfo(firstName, lastName, email, password);
       } else {
-        newAlert("All feilds requierd");
+        betterAlert("All feilds requierd");
       }
     } else {
-      newAlert("Invalid email");
+      betterAlert("Invalid email");
     }
   } else {
-    newAlert("Passwords do not match");
+    betterAlert("Passwords do not match");
   }
 }
 
@@ -91,7 +91,7 @@ function authenticate() {
       .then((response) => response.json())
       .then((data) => {
         if (data.error) {
-          newAlert(data.error);
+          betterAlert(data.error);
         } else {
           console.log(data);
           if (data.success) {
@@ -108,23 +108,23 @@ function authenticate() {
               .then((response) => response.json())
               .then((data) => {
                 if (data.error) {
-                  newAlert(data.error);
+                  betterAlert(data.error);
                 } else {
                   console.log("Account created successfully");
                   changePage("login");
                 }
               })
               .catch((error) => {
-                newAlert("An error occurred while creating the account.");
+                betterAlert("An error occurred while creating the account.");
                 console.error("Error:", error.message);
               });
           } else {
-            newAlert("Wrong code please try again");
+            betterAlert("Wrong code please try again");
           }
         }
       })
       .catch((error) => {
-        newAlert("An error occurred while creating the account.");
+        betterAlert("An error occurred while creating the account.");
         console.error("Error:", error.message);
       });
   }

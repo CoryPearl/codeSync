@@ -1,4 +1,4 @@
-function newAlert(message) {
+function betterAlert(message) {
   const alert = document.createElement("div");
   const text = document.createElement("p");
 
@@ -35,7 +35,7 @@ function newAlert(message) {
   }, 1500);
 }
 
-function confirm(message) {
+function betterConfirm(message) {
   const alert = document.createElement("div");
   const text = document.createElement("p");
   const buttons = document.createElement("div");
@@ -48,7 +48,8 @@ function confirm(message) {
   buttons.appendChild(no);
 
   alert.style.position = "absolute";
-  alert.style.top = "10%";
+  alert.style.height = "auto";
+  alert.style.top = "15%";
   alert.style.left = "50%";
   alert.style.transform = "translate(-50%, -50%)";
   alert.style.borderRadius = "10px";
@@ -58,7 +59,6 @@ function confirm(message) {
   alert.style.alignItems = "center";
   alert.style.flexDirection = "column";
   alert.style.width = "25%";
-  alert.style.height = "100px";
   alert.style.backgroundColor = "rgb(72, 72, 72)";
   alert.style.zIndex = "9999";
   alert.style.color = "white";
@@ -118,7 +118,7 @@ function confirm(message) {
   });
 }
 
-function promptInput(message) {
+function betterPrompt(message) {
   const alert = document.createElement("div");
   const text = document.createElement("p");
   const input = document.createElement("input");
