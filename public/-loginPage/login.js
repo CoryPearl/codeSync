@@ -5,10 +5,10 @@ function togglePassword() {
 
   if (passwordInput.type === "password") {
     passwordInput.type = "text";
-    showPasswordCheckbox.src = "assets/show.png";
+    showPasswordCheckbox.src = "../assets/show.png";
   } else {
     passwordInput.type = "password";
-    showPasswordCheckbox.src = "assets/hide.png";
+    showPasswordCheckbox.src = "../assets/hide.png";
   }
 }
 

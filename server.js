@@ -407,7 +407,7 @@ app.get("/joinCodeSyncByLink", (req, res) => {
       if (sessionStorage.getItem("firstName") != null) {
         sessionStorage.setItem("code", ${code});
         sessionStorage.setItem("roomPassword", "${password}");
-        window.location.href = "codeSync.html";
+        window.location.href = "-codeSyncPage/codeSync.html";
       }
     };
 
@@ -423,7 +423,7 @@ app.get("/joinCodeSyncByLink", (req, res) => {
       sessionStorage.setItem("lastName", lastName);
       sessionStorage.setItem("code", ${code});
       sessionStorage.setItem("roomPassword", "${password}");
-      window.location.href = "codeSync.html";
+      window.location.href = "-codeSyncPage/codeSync.html";
     }
   </script>
 </html>

@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CodeSync | Join</title>
-    <link rel="stylesheet" href="join.css" />
-    <link rel="icon" href="assets/logo.png" />
+    <title>CodeSync | Create</title>
+    <link rel="stylesheet" href="create.css" />
+    <link rel="icon" href="../assets/logo.png" />
   </head>
   <body>
     <h1 id="welcome" style="font-family: monospace"></h1>
     <nav id="nav">
       <div id="left">
-        <a href="index.html"><img src="assets/logo.png" alt="" /></a>
+        <a href="../index.html"><img src="../assets/logo.png" alt="" /></a>
         <p>CodeSync</p>
       </div>
       <div id="right">
@@ -53,11 +53,11 @@
           <h3>*Leave blank to keep same</h3>
         </div>
         <div id="buttons">
-          <a href="accountCreation.html" id="signUp"
+          <a href="../-accountCreationPage/accountCreation.html" id="signUp"
             ><button class="acc">Sign up</button></a
           >
           <img
-            src="assets/default-picture.png"
+            src="../assets/default-picture.png"
             alt="default-picture.png"
             id="profile"
             style="display: none; cursor: pointer"
@@ -71,33 +71,36 @@
           >
             Log out
           </button>
-          <a href="login.html" id="logIn"
+          <a href="../-loginPage/login.html" id="logIn"
             ><button class="acc">Log in</button></a
           >
-          <a href="join.html"><button id="start">Start Programing</button></a>
+          <a href="../-joinPage/join.html"
+            ><button id="start">Start Programing</button></a
+          >
         </div>
       </div>
     </nav>
     <div id="main">
       <input
         type="text"
-        id="input"
-        maxlength="6"
-        placeholder="Enter join code"
-        autocomplete="off"
-      />
-      <input
-        type="text"
         id="roomPassword"
         placeholder="Room Password"
         autocomplete="off"
       />
-      <button id="join_button" onclick="join()">Join</button>
-      <button id="joinByLinkButton" onclick="joinByLink()">Join by link</button>
+      <select id="lang">
+        <option selected value="Please select a language">
+          Please select a language
+        </option>
+        <option value="Java">Java</option>
+        <option value="Python">Python</option>
+        <option value="html/css/js">html/css/js</option>
+        <option value="Javascript">Javascript</option>
+      </select>
+      <button id="join_button" onclick="create()">Create</button>
       <p>Or</p>
-      <a href="create.html">Create a new CodeSync</a>
+      <a href="../-joinPage/join.html">Join a CodeSync</a>
     </div>
   </body>
-  <script src="betterAlerts/betterAlerts.js"></script>
-  <script src="join.js"></script>
+  <script src="../betterAlerts/betterAlerts.js"></script>
+  <script src="../-createPage/create.html"></script>
 </html>

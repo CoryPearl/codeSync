@@ -152,7 +152,7 @@ function join() {
     sessionStorage.setItem("code", code);
     sessionStorage.setItem("roomPassword", password);
 
-    window.location.href = "codeSync.html";
+    window.location.href = "../-codeSyncPage/codeSync.html";
 
     // fetch("/joinCodeSync", {
     //   method: "POST",

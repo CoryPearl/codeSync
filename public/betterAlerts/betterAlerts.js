@@ -24,9 +24,11 @@ function betterAlert(message) {
   alert.style.opacity = "0";
   alert.style.transition = "opacity 0.5s";
   document.body.appendChild(alert);
+
   setTimeout(() => {
     alert.style.opacity = "1";
   }, 10);
+
   setTimeout(() => {
     alert.style.opacity = "0";
     setTimeout(() => {
@@ -109,6 +111,7 @@ function betterConfirm(message) {
     }, 500);
     return true;
   });
+
   no.addEventListener("click", function (e) {
     alert.style.opacity = "0";
     setTimeout(() => {

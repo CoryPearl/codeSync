@@ -8,11 +8,11 @@ function togglePassword() {
   if (passwordInput.type === "password") {
     passwordInput.type = "text";
     passwordInput2.type = "text";
-    showPasswordCheckbox.src = "assets/show.png";
+    showPasswordCheckbox.src = "../assets/show.png";
   } else {
     passwordInput.type = "password";
     passwordInput2.type = "password";
-    showPasswordCheckbox.src = "assets/hide.png";
+    showPasswordCheckbox.src = "../assets/hide.png";
   }
 }
 
