@@ -169,7 +169,7 @@ function create() {
           sessionStorage.setItem("code", data.code);
           sessionStorage.setItem("roomPassword", password);
           sessionStorage.setItem("language", language);
-          window.location.replace("codeSync.html");
+          window.location.replace("../-codeSyncPage/codeSync.html");
         }
       })
       .catch((error) => {

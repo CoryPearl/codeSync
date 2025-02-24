@@ -111,7 +111,7 @@ function authenticate() {
                   betterAlert(data.error);
                 } else {
                   console.log("Account created successfully");
-                  changePage("login");
+                  changePage("../-loginPage/login");
                 }
               })
               .catch((error) => {

@@ -29,7 +29,7 @@ function sendInfo(email, password) {
         console.log(sessionStorage.getItem("loggedIn"));
         sessionStorage.setItem("email", email);
         sessionStorage.setItem("password", password);
-        changePage("index");
+        changePage("../index");
       }
     })
     .catch((error) => {
